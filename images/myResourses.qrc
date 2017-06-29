@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/myImages">
+        <file>T_64.png</file>
+        <file>login_64.png</file>
+        <file>Pause_64.png</file>
+        <file>Start_64.png</file>
+        <file>Pause_Hot_64.png</file>
+        <file>Pause_Normal_Red_64.png</file>
+        <file>restart_64.png</file>
+        <file>settings_backup_restore_64.png</file>
+    </qresource>
+</RCC>

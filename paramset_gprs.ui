@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Paramset_gprs</class>
+ <widget class="QDialog" name="Paramset_gprs">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>379</width>
+    <height>503</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>360</y>
+     <width>261</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>主站通讯参数配置</string>
+   </property>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>71</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>主站IP：</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>60</y>
+      <width>81</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>主站端口：</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_IP_server">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>30</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>127.0.0.1</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_sPort_server">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>60</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>6666</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="pushBtn_OK">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>470</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>确定</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>20</y>
+     <width>261</width>
+     <height>331</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>通信配置</string>
+   </property>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>60</y>
+      <width>54</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>在线方式：</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comBox_workmodel">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>30</y>
+      <width>91</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="currentText">
+     <string>客户机模式</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>混合模式</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>客户机模式</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>服务器模式</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>54</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>工作模式：</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>120</y>
+      <width>81</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>连接应用方式：</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>260</y>
+      <width>121</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>超时时间及重发次数：</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>290</y>
+      <width>54</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>心跳周期：</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comBox_applicationType">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>120</y>
+      <width>91</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="currentText">
+     <string>主备模式</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>主备模式</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>多连接模式</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QComboBox" name="comBox_onlinestyle">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>60</y>
+      <width>91</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="currentText">
+     <string>永久在线</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>永久在线</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>被动激活</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_delaytimes">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>260</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>01010011</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_heartbeat">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>290</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>300</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comBox_linkstyle">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>90</y>
+      <width>91</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="currentText">
+     <string>TCP</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>TCP</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>UDP</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>54</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>连接方式：</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_APN">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>160</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>CMNET</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_10">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>160</y>
+      <width>54</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>APN：</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_user">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>190</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>card</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_11">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>190</y>
+      <width>54</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>用户名：</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_password">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>220</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>card</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_12">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>220</y>
+      <width>54</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>密码：</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
