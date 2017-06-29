@@ -36,9 +36,8 @@ void TestThread::run()
 
         if(Dataclass.TestINFO.testSteps_currentTeststep==1)//step1====启动测试后读取版本信息
         {
-            if(Dataclass.TestINFO.step_Selected[0]==false
-                    ||Dataclass.DEV_versionRead==true
-                    ||(Dataclass.TestINFO.test_resendtimes>2))//未选择当前测试项   收到成功回复  重发过两次
+            if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_versionRead==true||(Dataclass.TestINFO.test_resendtimes>2)))
+                    ||(Dataclass.TestINFO.step_Selected[0]==false))//未选择当前测试项   收到成功回复  重发过两次
             {
                 Dataclass.TestINFO.testSteps_currentTeststep++;
                 Dataclass.TestINFO.test_resendtimes=0;
@@ -55,9 +54,8 @@ void TestThread::run()
 
         if(Dataclass.TestINFO.testSteps_currentTeststep==2)//step2====版本信息读取成功后读取当前时间
         {
-            if(Dataclass.TestINFO.step_Selected[1]==false
-                    ||Dataclass.DEV_timeRead==true
-                    ||(Dataclass.TestINFO.test_resendtimes>2))//未选择当前测试项   收到成功回复  重发过两次
+            if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_timeRead==true||(Dataclass.TestINFO.test_resendtimes>2)))
+                    ||(Dataclass.TestINFO.step_Selected[1]==false))//未选择当前测试项   收到成功回复  重发过两次
             {
                 Dataclass.TestINFO.testSteps_currentTeststep++;
                 Dataclass.TestINFO.test_resendtimes=0;
@@ -73,9 +71,8 @@ void TestThread::run()
 
         if(Dataclass.TestINFO.testSteps_currentTeststep==3)//step3===="设备终端电压读取: "
         {
-            if(Dataclass.TestINFO.step_Selected[2]==false
-                    ||Dataclass.DEV_voltageRead==true
-                    ||(Dataclass.TestINFO.test_resendtimes>2))//未选择当前测试项   收到成功回复  重发过两次
+            if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_voltageRead==true||(Dataclass.TestINFO.test_resendtimes>2)))
+                    ||(Dataclass.TestINFO.step_Selected[2]==false))//未选择当前测试项   收到成功回复  重发过两次
             {
                 Dataclass.TestINFO.testSteps_currentTeststep++;
                 Dataclass.TestINFO.test_resendtimes=0;
@@ -91,9 +88,8 @@ void TestThread::run()
 
         if(Dataclass.TestINFO.testSteps_currentTeststep==4)//step4===="设备遥信变位读取: "
         {
-            if(Dataclass.TestINFO.step_Selected[3]==false
-                    ||Dataclass.DEV_yxchangeRead==true
-                    ||(Dataclass.TestINFO.test_resendtimes>2))//未选择当前测试项   收到成功回复  重发过两次
+            if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_yxchangeRead==true||(Dataclass.TestINFO.test_resendtimes>2)))
+                    ||(Dataclass.TestINFO.step_Selected[3]==false))//未选择当前测试项   收到成功回复  重发过两次
             {
                 Dataclass.TestINFO.testSteps_currentTeststep++;
                 Dataclass.TestINFO.test_resendtimes=0;
@@ -109,9 +105,8 @@ void TestThread::run()
 
         if(Dataclass.TestINFO.testSteps_currentTeststep==5)//step5===="电表有功电能读取转发1: "
         {
-            if(Dataclass.TestINFO.step_Selected[4]==false
-                    ||Dataclass.DEV_meterenergyRead_4851==true
-                    ||(Dataclass.TestINFO.test_resendtimes>2))//未选择当前测试项   收到成功回复  重发过两次
+            if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_meterenergyRead_4851==true||(Dataclass.TestINFO.test_resendtimes>2)))
+                    ||(Dataclass.TestINFO.step_Selected[4]==false))//未选择当前测试项   收到成功回复  重发过两次
             {
                 Dataclass.TestINFO.testSteps_currentTeststep++;
                 Dataclass.TestINFO.test_resendtimes=0;
@@ -127,9 +122,8 @@ void TestThread::run()
 
         if(Dataclass.TestINFO.testSteps_currentTeststep==6)//step6===="电表有功电能读取转发2: "
         {
-            if(Dataclass.TestINFO.step_Selected[5]==false
-                    ||Dataclass.DEV_meterenergyRead_4852==true
-                    ||(Dataclass.TestINFO.test_resendtimes>2))//未选择当前测试项   收到成功回复  重发过两次
+            if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_meterenergyRead_4852==true||(Dataclass.TestINFO.test_resendtimes>2)))
+                    ||(Dataclass.TestINFO.step_Selected[5]==false))//未选择当前测试项   收到成功回复  重发过两次
             {
                 Dataclass.TestINFO.testSteps_currentTeststep++;
                 Dataclass.TestINFO.test_resendtimes=0;
@@ -145,9 +139,8 @@ void TestThread::run()
 
         if(Dataclass.TestINFO.testSteps_currentTeststep==7)//step7====ESAM版本信息读取
         {
-            if(Dataclass.TestINFO.step_Selected[6]==false
-                    ||Dataclass.DEV_ESAMRead==true
-                    ||(Dataclass.TestINFO.test_resendtimes>2))//未选择当前测试项   收到成功回复  重发过两次
+            if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_ESAMRead==true||(Dataclass.TestINFO.test_resendtimes>2)))
+                    ||(Dataclass.TestINFO.step_Selected[6]==false))//未选择当前测试项   收到成功回复  重发过两次
             {
                 Dataclass.TestINFO.testSteps_currentTeststep++;
                 Dataclass.TestINFO.test_resendtimes=0;
@@ -163,9 +156,8 @@ void TestThread::run()
 
         if(Dataclass.TestINFO.testSteps_currentTeststep==8)//step8====以太网参数下设1
         {
-            if(Dataclass.TestINFO.step_Selected[7]==false
-                    ||Dataclass.DEV_internetParamset_1==true
-                    ||(Dataclass.TestINFO.test_resendtimes>2))//未选择当前测试项   收到成功回复  重发过两次
+            if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_internetParamset_1==true||(Dataclass.TestINFO.test_resendtimes>2)))
+                    ||(Dataclass.TestINFO.step_Selected[7]==false))//未选择当前测试项   收到成功回复  重发过两次
             {
                 Dataclass.TestINFO.testSteps_currentTeststep++;
                 Dataclass.TestINFO.test_resendtimes=0;
@@ -181,9 +173,8 @@ void TestThread::run()
 
         if(Dataclass.TestINFO.testSteps_currentTeststep==9)//step9====以太网参数下设2
         {
-            if(Dataclass.TestINFO.step_Selected[7]==false
-                    ||Dataclass.DEV_internetParamset_2==true
-                    ||(Dataclass.TestINFO.test_resendtimes>2))//未选择当前测试项   收到成功回复  重发过两次
+            if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_internetParamset_2==true||(Dataclass.TestINFO.test_resendtimes>2)))
+                    ||(Dataclass.TestINFO.step_Selected[7]==false))//未选择当前测试项   收到成功回复  重发过两次
             {
                 Dataclass.TestINFO.testSteps_currentTeststep++;
                 Dataclass.TestINFO.test_resendtimes=0;
@@ -199,16 +190,18 @@ void TestThread::run()
 
         if(Dataclass.TestINFO.testSteps_currentTeststep==10)//step10====以太网参数下设3
         {
-            if(Dataclass.TestINFO.step_Selected[7]==false
-                    ||Dataclass.DEV_internetParamset_3==true
-                    ||(Dataclass.TestINFO.test_resendtimes>2))//未选择当前测试项   收到成功回复  重发过两次
+            if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_internetParamset_3==true||(Dataclass.TestINFO.test_resendtimes>2)))
+                    ||(Dataclass.TestINFO.step_Selected[7]==false))//未选择当前测试项   收到成功回复  重发过两次
             {
                 Dataclass.TestINFO.testSteps_currentTeststep=0;//Dataclass.TestINFO.testSteps_currentTeststep++;等待以太网上线
                 Dataclass.TestINFO.test_resendtimes=0;
                 Dataclass.DEV_internetParamset_3=false;
 
-                if(Dataclass.TestINFO.testSteps_totalLevel==1)
+                if(Dataclass.TestINFO.testSteps_currentLevel==1)
+                {
                     Dataclass.DEV_testprocess_end=true;//若只选择了串口测试相关项，测试结束
+                    emit(this->testprocess_end());
+                }
             }
             else
             {
@@ -238,13 +231,12 @@ void TestThread::run()
 
         if(Dataclass.TestINFO.testSteps_currentTeststep==12)//step12====GPRS参数下设1
         {
-            if(Dataclass.TestINFO.step_Selected[9]==false
-                    ||Dataclass.DEV_internetParamset_1==true
-                    ||(Dataclass.TestINFO.test_resendtimes>2))//未选择当前测试项   收到成功回复  重发过两次
+            if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_gprsParamset_1==true||(Dataclass.TestINFO.test_resendtimes>2)))
+                    ||(Dataclass.TestINFO.step_Selected[9]==false))//未选择当前测试项   收到成功回复  重发过两次
             {
                 Dataclass.TestINFO.testSteps_currentTeststep++;
                 Dataclass.TestINFO.test_resendtimes=0;
-                Dataclass.DEV_internetParamset_1=false;
+                Dataclass.DEV_gprsParamset_1=false;
             }
             else
             {
@@ -256,16 +248,19 @@ void TestThread::run()
 
         if(Dataclass.TestINFO.testSteps_currentTeststep==13)//step13====GPRS参数下设2
         {
-            if(Dataclass.TestINFO.step_Selected[9]==false
-                    ||Dataclass.DEV_internetParamset_2==true
-                    ||(Dataclass.TestINFO.test_resendtimes>2))//未选择当前测试项   收到成功回复  重发过两次
+            if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_gprsParamset_2==true||(Dataclass.TestINFO.test_resendtimes>2)))
+                    ||(Dataclass.TestINFO.step_Selected[9]==false))//未选择当前测试项   收到成功回复  重发过两次
             {
                 Dataclass.TestINFO.testSteps_currentTeststep=0;//Dataclass.TestINFO.testSteps_currentTeststep++;//等待GPRS上线
                 Dataclass.TestINFO.test_resendtimes=0;
-                Dataclass.DEV_internetParamset_2=false;
+                Dataclass.DEV_gprsParamset_2=false;
 
-                if(Dataclass.TestINFO.testSteps_totalLevel==2)
+                if(Dataclass.TestINFO.testSteps_currentLevel==2)
+                {
                     Dataclass.DEV_testprocess_end=true;//若只选择了串口测试相关项和网口测试相关项，测试结束
+                    emit(this->testprocess_end());
+                }
+
             }
             else
             {
@@ -361,8 +356,8 @@ void TestThread::run()
         {
             if(Dataclass.TestINFO.testSteps_currentTeststep<=10)//串口发送
             {
-                char *buf;
-                buf=Dataclass.Buffer_send.data();
+//                char *buf_send;
+//                buf_send=Dataclass.Buffer_send.data();
 
                 this->threadA.TxData.clear();
                 this->threadA.TxData.append(Dataclass.Buffer_send,Dataclass.BufLen_send);
@@ -371,11 +366,13 @@ void TestThread::run()
             else//网口发送
             {
                 //m_tcpsocket->write(Dataclass.Buffer_send);
+                //sendmsg_server()
+                emit(this->sendmsg_server());
             }
 
         }
 
-        sleep(5);
+        sleep(20);
     }
 }
 

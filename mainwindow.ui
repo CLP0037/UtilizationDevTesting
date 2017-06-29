@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1076</width>
-    <height>546</height>
+    <height>598</height>
    </rect>
   </property>
   <property name="font">
@@ -168,7 +168,7 @@
       <x>190</x>
       <y>80</y>
       <width>811</width>
-      <height>371</height>
+      <height>431</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -184,7 +184,7 @@
         <x>10</x>
         <y>10</y>
         <width>791</width>
-        <height>321</height>
+        <height>381</height>
        </rect>
       </property>
       <property name="editTriggers">
@@ -194,7 +194,7 @@
        <enum>QAbstractItemView::ExtendedSelection</enum>
       </property>
       <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>155</number>
+       <number>140</number>
       </attribute>
       <attribute name="verticalHeaderDefaultSectionSize">
        <number>30</number>
@@ -202,6 +202,9 @@
       <column>
        <property name="text">
         <string>是否测试</string>
+       </property>
+       <property name="textAlignment">
+        <set>AlignHCenter|AlignVCenter|AlignCenter</set>
        </property>
       </column>
       <column>
@@ -233,20 +236,20 @@
      <widget class="QTextEdit" name="textEdit_msg">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>40</y>
-        <width>601</width>
-        <height>291</height>
+        <width>791</width>
+        <height>351</height>
        </rect>
       </property>
      </widget>
      <widget class="QPushButton" name="pushButton_clear">
       <property name="geometry">
        <rect>
-        <x>470</x>
-        <y>10</y>
-        <width>75</width>
-        <height>23</height>
+        <x>710</x>
+        <y>0</y>
+        <width>81</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">

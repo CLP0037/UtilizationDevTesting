@@ -24,6 +24,9 @@ protected:
 private:
     //TestThread* threadTest;
 
+signals:
+    void testprocess_end();//测试线程终止
+    void sendmsg_server();//网口发送报文
 };
 
 #endif // TESTTHREAD_H

@@ -9,6 +9,7 @@
 #include <QDateTime>
 #include "Checksum.h"
 #include "publicdataclass.h"
+#include <QChar>
 
 extern PublicDataclass Dataclass;
 
@@ -148,8 +149,6 @@ int DEV_protocol::Encode(QByteArray &buf, int dataty,QString DEV_adr,QString amm
         else if(dataty==6)
             buf.append(0x02);
 
-        buf.append((char)0x00);//buf[length++]=0x00;
-
         buf.append(0x03);//buf[length++]=0x03;//波特率：2400
         buf.append(0x02);//buf[length++]=0x02;//偶校验
         buf.append(0x08);//buf[length++]=0x08;//数据位：8
@@ -166,12 +165,16 @@ int DEV_protocol::Encode(QByteArray &buf, int dataty,QString DEV_adr,QString amm
         buf.append(0x68);//buf[length++]=0x68;//
 
         //电表地址
-        int len_b=ammeter_adr.size();
-        buf.append((len_b/2)-1);//buf[length++]=(len_a/2)-1;//数据长度
-
+        int len_b=ammeter_adr.size();//数据长度
+        int ammeter_adr_buf1;
+        int ammeter_adr_buf2;
+        bool ok_adr;
         for(int n=0;n<len_b/2;n++)
         {
-            buf.append(ammeter_adr.mid(len_b-2-2*n,2));//buf[length++]=devArray[n];
+            ammeter_adr_buf1=ammeter_adr.mid(len_b-2-2*n,1).toInt(&ok_adr,10);
+            ammeter_adr_buf2=ammeter_adr.mid(len_b-1-2*n,1).toInt(&ok_adr,10);
+
+            buf.append(ammeter_adr_buf1*16+ammeter_adr_buf2);//ammeter_adr.mid(len_b-2-2*n,2)
         }
 
         buf.append(0x68);//buf[length++]=0x68;
@@ -269,9 +272,10 @@ int DEV_protocol::Encode(QByteArray &buf, int dataty,QString DEV_adr,QString amm
         buf.append(0x02);
 
         buf.append(0x09);//类型：9;长度：主站IP长度
-        buf.append(Dataclass.INTERNET_Param.IP_server.size());
-
         QStringList strList=Dataclass.INTERNET_Param.IP_server.split(".",QString::SkipEmptyParts);
+        buf.append(strList.size());
+
+
         bool ok;
         int aa;
         for(int n=0;n<strList.size();n++)
@@ -305,9 +309,8 @@ int DEV_protocol::Encode(QByteArray &buf, int dataty,QString DEV_adr,QString amm
         buf.append(Dataclass.INTERNET_Param.IP_setway);
 
         buf.append(0x09);//类型：9;长度：设备IP长度
-        buf.append(Dataclass.INTERNET_Param.IP_dev.size());
-
         QStringList strList=Dataclass.INTERNET_Param.IP_dev.split(".",QString::SkipEmptyParts);
+        buf.append(strList.size());
         bool ok;
         int aa;
         for(int n=0;n<strList.size();n++)
@@ -317,10 +320,11 @@ int DEV_protocol::Encode(QByteArray &buf, int dataty,QString DEV_adr,QString amm
         }
 
         buf.append(0x09);//类型：9;长度：子网掩码IP长度
-        buf.append(Dataclass.INTERNET_Param.IP_subnetmask.size());
-
         strList.clear();
         strList=Dataclass.INTERNET_Param.IP_subnetmask.split(".",QString::SkipEmptyParts);
+        buf.append(strList.size());
+
+
         for(int n=0;n<strList.size();n++)
         {
             aa=strList[n].toInt(&ok,10);
@@ -328,10 +332,11 @@ int DEV_protocol::Encode(QByteArray &buf, int dataty,QString DEV_adr,QString amm
         }
 
         buf.append(0x09);//类型：9;长度：网关IP长度
-        buf.append(Dataclass.INTERNET_Param.IP_gateway.size());
-
         strList.clear();
         strList=Dataclass.INTERNET_Param.IP_gateway.split(".",QString::SkipEmptyParts);
+        buf.append(strList.size());
+
+
         for(int n=0;n<strList.size();n++)
         {
             aa=strList[n].toInt(&ok,10);
@@ -1028,17 +1033,18 @@ int DEV_protocol::Decode(QByteArray buf)
 
                 int item_num=buf[DEV_adr_len+16];//转发报文长度
                 QByteArray describe_data=buf.mid(DEV_adr_len+17,buf.size()-(DEV_adr_len+17)-3-2);
-                char *buf;
+                char *buf_data;
                 char tmp[256];
-                buf=describe_data.data();
+                buf_data=describe_data.data();
                 for(int n=0;n<item_num;n++)
                 {
-                    ::snprintf(tmp,256, "%02X", (unsigned char)(*buf));
-                    buf++;
+                    ::snprintf(tmp,256, "%02X", (unsigned char)(*buf_data));
+                    buf_data++;
                     Dataclass.Result_meterenergy.Result_describe+=QString::fromUtf8(tmp);
                     Dataclass.Result_meterenergy.Result_describe+=" ";
                 }
 
+                //char nnn=buf[DEV_adr_len+14];
                 if(buf[DEV_adr_len+14]==(char)0x01)
                 {
                     Dataclass.DEV_meterenergyRead_4851=true;
@@ -1086,16 +1092,20 @@ int DEV_protocol::Decode(QByteArray buf)
                 {
                     Dataclass.Result_gprsParam.Result_FCS="帧校验不正确";
                 }
-                Dataclass.Result_gprsParam.Result_describe="Recieve OK :公网通信模块1确认";
+                Dataclass.Result_gprsParam.Result_describe="Recieve OK";
                 if((buf[DEV_adr_len+13]==(char)0x02))//公网通信模块1确认 属性2
                 {
                     Dataclass.DEV_gprsParamset_1=true;
+                    Dataclass.Result_gprsParam.Result_describe="Recieve OK :公网通信模块1确认_1";
                     dataty=22;
                 }
                 else if((buf[DEV_adr_len+13]==(char)0x03))//公网通信模块1确认 属性3
                 {
                     Dataclass.DEV_gprsParamset_2=true;
+                    Dataclass.Result_gprsParam.Result_describe="Recieve OK :公网通信模块1确认_2";
                     dataty=23;
+                    if(Dataclass.TestINFO.step_Selected[10]==true)
+                        Dataclass.TestINFO.testSteps_currentLevel=3;//GPRS参数下设结束，进入第三测试阶段
                 }
             }
             else if((buf[DEV_adr_len+11]==(char)0x45)&&buf[DEV_adr_len+12]==(char)0x10)
@@ -1116,24 +1126,27 @@ int DEV_protocol::Decode(QByteArray buf)
                 {
                     Dataclass.Result_internetParam.Result_FCS="帧校验不正确";
                 }
-                Dataclass.Result_internetParam.Result_describe="Recieve OK :以太网通信模块1确认";
+                Dataclass.Result_internetParam.Result_describe="Recieve OK";
+
                 if((buf[DEV_adr_len+13]==(char)0x02))//以太网通信模块1确认 属性2
                 {
                     Dataclass.DEV_internetParamset_1=true;
-
+                    Dataclass.Result_internetParam.Result_describe="Recieve OK :以太网通信模块1确认_1";
                     dataty=18;
                 }
                 else if((buf[DEV_adr_len+13]==(char)0x03))//以太网通信模块1确认 属性3
                 {
                     Dataclass.DEV_internetParamset_2=true;
-
+                    Dataclass.Result_internetParam.Result_describe="Recieve OK :以太网通信模块1确认_2";
                     dataty=19;
                 }
                 else if((buf[DEV_adr_len+13]==(char)0x04))//以太网通信模块1确认 属性4
                 {
                     Dataclass.DEV_internetParamset_3=true;
-
+                    Dataclass.Result_internetParam.Result_describe="Recieve OK :以太网通信模块1确认_3";
                     dataty=20;
+                    if(Dataclass.TestINFO.step_Selected[9]==true||Dataclass.TestINFO.step_Selected[8]==true)
+                        Dataclass.TestINFO.testSteps_currentLevel=2;//以太网参数参数下设结束，进入第二测试阶段
                 }
             }
 
@@ -1141,6 +1154,33 @@ int DEV_protocol::Decode(QByteArray buf)
         //登录帧或心跳帧
         else if((buf[DEV_adr_len+8]&0x0f)==(char)0x01)
         {
+            QString loginResult_HCS;
+            QString loginResult_FCS;
+            QString loginResult_describe;
+            if(HCS_show==HCS_caculate)//=====
+            {
+                loginResult_HCS=QString::number(HCS_caculate,16);
+            }
+            else
+            {
+                loginResult_HCS="帧校验不正确";
+            }
+            if(FCS_show==FCS_caculate)//=====
+            {
+                loginResult_FCS=QString::number(FCS_caculate,16);
+            }
+            else
+            {
+                loginResult_FCS="帧校验不正确";
+            }
+            loginResult_describe="Recieve OK:登录上线确认";
+
+            Dataclass.Buffer_time.clear();
+            for(int n=0;n<10;n++)//存储接收到的登录帧上传时间
+            {
+                Dataclass.Buffer_time.append(buf[DEV_adr_len+13+n]);
+            }
+
             if((buf[DEV_adr_len+10]&0x0f)==(char)0x00)//登录
             {
                 if(Dataclass.TestINFO.testSteps_currentLevel==2)
@@ -1148,18 +1188,26 @@ int DEV_protocol::Decode(QByteArray buf)
                     Dataclass.DEV_internetLogin=true;//以太网登录确认
                     dataty=21;
                     Dataclass.TestINFO.testSteps_currentTeststep=12;//登录确认后可以下设GPRS参数
+
+                    Dataclass.Result_internetlogin.Result_HCS=loginResult_HCS;
+                    Dataclass.Result_internetlogin.Result_FCS=loginResult_FCS;
+                    Dataclass.Result_internetlogin.Result_describe=loginResult_describe;
+
                 }
                 else if(Dataclass.TestINFO.testSteps_currentLevel==3)
                 {
                     Dataclass.DEV_gprsLogin=true;//GPRS登录确认
                     dataty=24;
 
+                    Dataclass.Result_gprslogin.Result_HCS=loginResult_HCS;
+                    Dataclass.Result_gprslogin.Result_FCS=loginResult_FCS;
+                    Dataclass.Result_gprslogin.Result_describe=loginResult_describe;
 
                 }
             }
             else if((buf[DEV_adr_len+10]&0x0f)==(char)0x01)//心跳
             {
-
+                dataty=25;//心跳帧
             }
         }
     }

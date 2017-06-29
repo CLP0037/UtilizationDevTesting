@@ -15,6 +15,8 @@
 #include<QtNetwork/QTcpSocket>
 #include<QtNetwork/QTcpServer>
 
+
+
 namespace Ui {
 class MainWindow;
 }
@@ -35,9 +37,14 @@ public:
     QTcpServer *m_tcpserver;
 
 
+
+
 private slots:
     void displayRxData();
     void displayTxData();
+    void End_process();
+    void sendMessage_server();
+
     void ShowMsg(int type,QByteArray buf_msg);
 
     void on_action_Link_triggered();
@@ -78,6 +85,7 @@ private:
 
     Paramset_internet paraminter_frm;
     Paramset_gprs paramgprs_frm;
+
 
 };
 

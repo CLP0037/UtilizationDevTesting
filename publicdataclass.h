@@ -87,6 +87,10 @@ public:
     tResult Result_gprsParam;    //gprs参数1+2
 //    tResult Result_gprsParam2;
 
+    tResult Result_internetlogin;
+    tResult Result_gprslogin;
+
+
     //测试相关参数
     typedef struct testInformation
     {
@@ -94,7 +98,7 @@ public:
         int testSteps_currentLevel;//当前步骤阶段：1阶段==串口通讯；2阶段==网口通讯；3阶段==GPRS通讯
         int testSteps_totalLevel;
         int testSteps_currentTeststep;//当前测试步骤
-        bool step_Selected[14];//testSteps_total
+        bool step_Selected[11];//testSteps_total
         int test_resendtimes;
 
     }testInfo;

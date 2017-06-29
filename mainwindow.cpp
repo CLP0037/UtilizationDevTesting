@@ -18,6 +18,8 @@
 #include <QTableWidget>
 #include <QTableWidgetItem>
 //#include <QtGui/QApplication>
+#include <QDialog>  //对话框显示
+#include <QMessageBox>
 
 extern PublicDataclass Dataclass;
 
@@ -70,18 +72,23 @@ MainWindow::MainWindow(QWidget *parent) :
         QTableWidgetItem *check = new QTableWidgetItem();
         check->setCheckState(Qt::Unchecked);
         ui->tableWidget_Result->setItem(n,0,check);
+        if(n >= 8){
+            check->flags();
+            check->setFlags(check->flags() & (~Qt::ItemIsEnabled));
+        }
     }
-//    QTableWidget *tableWidget = new QTableWidget;
-//    QTableWidgetItem *firstColumn = new QTableWidgetItem();
-//    firstColumn->setCheckState(Qt::Checked);//加入复选框
      connect(ui->tableWidget_Result, SIGNAL(cellChanged(int,int)), this, SLOT(changeTest(int, int)));
 
+     ui->tableWidget_Result->setEditTriggers(QAbstractItemView::NoEditTriggers); //即可设置整个表格不可编辑
 
      threadTest.threadA.changeTxState(false);
      threadTest.threadA.TxData.clear();
      connect(&threadTest.threadA, SIGNAL(comRecive()), this, SLOT(displayRxData()));//收到报文在报文显示窗展示
      connect(&threadTest.threadA, SIGNAL(comSend()), this, SLOT(displayTxData()));//发送的报文在报文显示窗展示
-
+     //testprocess_end()  End_process()
+     connect(&this->threadTest,SIGNAL(testprocess_end()),this,SLOT(End_process()));//完成测试结束测试线程
+     //sendmessage_server()   sendMessage_server()
+     connect(&this->threadTest,SIGNAL(sendmsg_server()),this,SLOT(sendMessage_server()));//
 
      ui->pushBtn_Start->setDisabled(true);
      ui->pushBtn_Stop->setDisabled(true);
@@ -89,6 +96,11 @@ MainWindow::MainWindow(QWidget *parent) :
      ui->pushBtn_Reset->setDisabled(true);
      ui->btn_Link->setDisabled(false);
      ui->btn_unLink->setDisabled(true);
+
+
+//     QDialog *dlg = new QDialog(this);
+//     dlg->show();
+
 }
 
 MainWindow::~MainWindow()
@@ -99,49 +111,65 @@ MainWindow::~MainWindow()
 void MainWindow::changeTest(int row, int col)
 {
     int row_select;
-    if(ui->tableWidget_Result ->item(row, col)->checkState() == Qt::Checked)//某行某列被选中
+    //测试过程中不允许修改测试项的选中状态
+    if(Dataclass.DEV_testprocess==false)
     {
-         //某行某列
-        row_select=row;
-        Dataclass.TestINFO.step_Selected[row_select]=true;
-        //Dataclass.TestINFO.testSteps_totalLevel=2;
-        switch(row_select)
+        if(ui->tableWidget_Result ->item(row, col)->checkState() == Qt::Checked)//某行某列被选中
         {
-
-        case 0:
-        {
-
-        }break;
-
-        case 7://以太网参数下设=====弹窗设置以太网相关参数
-        {
-            if(paraminter_frm.exec()==QDialog::Accepted)//设置以太网参数确认
+             //某行某列
+            row_select=row;
+            Dataclass.TestINFO.step_Selected[row_select]=true;
+            //Dataclass.TestINFO.testSteps_totalLevel=2;
+            switch(row_select)
             {
 
-            }
-
-        }break;
-
-
-
-
-        case 9://GPRS参数下设=====弹窗设置GPRS相关参数
-        {
-            if(paramgprs_frm.exec()==QDialog::Accepted)//设置GPRS参数确认
+            case 0:
             {
 
+            }break;
+
+            case 7://以太网参数下设=====弹窗设置以太网相关参数
+            {
+                if(paraminter_frm.exec()==QDialog::Accepted)//设置以太网参数确认
+                {
+                    //  可选择测试以太网测试相关项
+                    for(int n=0;n<2;n++)
+                    {
+                        QTableWidgetItem *check = ui->tableWidget_Result->item((row_select+1+n),0);
+                        check->setFlags(check->flags() | Qt::ItemIsEnabled);
+                    }
+
+
+
+
+                }
+
+            }break;
+
+
+
+
+            case 9://GPRS参数下设=====弹窗设置GPRS相关参数
+            {
+                if(paramgprs_frm.exec()==QDialog::Accepted)//设置GPRS参数确认
+                {
+                    //可选择测试GPRS相关项
+                    QTableWidgetItem *check = ui->tableWidget_Result->item((row_select+1),0);
+                    check->setFlags(check->flags() | Qt::ItemIsEnabled);
+                }
+
+            }break;
+
+
+
             }
-
-        }break;
-
-
-
         }
-    }
-    else if(ui->tableWidget_Result ->item(row, col)->checkState() == Qt::Unchecked)//某行某列被取消选中
-    {
-        row_select=row;
-        Dataclass.TestINFO.step_Selected[row_select]=false;
+        else if(ui->tableWidget_Result ->item(row, col)->checkState() == Qt::Unchecked)//某行某列被取消选中
+        {
+            row_select=row;
+            Dataclass.TestINFO.step_Selected[row_select]=false;
+        }
+
     }
 
 }
@@ -197,7 +225,7 @@ void MainWindow::on_pushBtn_Start_clicked()//启动测试
         ui->lineEdit_ammetervaddr->setDisabled(true);
 
 
-        Dataclass.TestINFO.testSteps_total=11;//目前可选的总测试项目数为11
+        Dataclass.TestINFO.testSteps_total=14;//目前可选的总测试项目数为11 总步骤为14
         Dataclass.TestINFO.testSteps_currentLevel=1;
         Dataclass.TestINFO.testSteps_currentTeststep=1;
 
@@ -484,23 +512,32 @@ void MainWindow::displayRxData()//显示串口接收报文内容
 
 
 
-        if(Dataclass.DEV_testprocess_end==true&&Dataclass.TestINFO.testSteps_totalLevel==1)//end=====若只选了串口测试，串口测试结束
-        {
-            Dataclass.DEV_testprocess_end=false;
 
-            Dataclass.DEV_testprocess=false;
-
-            //停止测试线程
-            ui->lineEdit_devaddr->setDisabled(false);
-            ui->lineEdit_ammetervaddr->setDisabled(false);
-            //this->threadTest.stop();
-            this->threadTest.terminate();
-            this->threadTest.wait();
-            ui->pushBtn_Start->setDisabled(false);
-            ui->pushBtn_Stop->setDisabled(true);
-        }
     }
     threadTest.threadA.requestData.clear();
+}
+
+void MainWindow::End_process()//结束测试线程
+{
+    if(Dataclass.DEV_testprocess_end==true)//&&Dataclass.TestINFO.testSteps_totalLevel==1  end=====若只选了串口测试，串口测试结束
+    {
+        Dataclass.DEV_testprocess_end=false;
+
+        Dataclass.DEV_testprocess=false;
+
+
+        Dataclass.TestINFO.testSteps_currentLevel=0;
+        Dataclass.TestINFO.testSteps_currentTeststep=1;
+
+        //停止测试线程
+        ui->lineEdit_devaddr->setDisabled(false);
+        ui->lineEdit_ammetervaddr->setDisabled(false);
+        //this->threadTest.stop();
+        this->threadTest.terminate();
+        this->threadTest.wait();
+        ui->pushBtn_Start->setDisabled(false);
+        ui->pushBtn_Stop->setDisabled(true);
+    }
 }
 
 void MainWindow::displayTxData()//显示串口发送报文内容
@@ -570,10 +607,8 @@ void MainWindow::newConnect()
     ui->textEdit_msg->append("new client connected!!!");
 
     m_tcpsocket = m_tcpserver->nextPendingConnection();//设置监听
-    connect(m_tcpsocket,SIGNAL(readyRead()),
-            this,SLOT(readMessage())); //服务器接收客户端的消息
-    connect(m_tcpsocket,SIGNAL(disconnected()),
-                m_tcpsocket,SLOT(deleteLater()));
+    connect(m_tcpsocket,SIGNAL(readyRead()),this,SLOT(readMessage())); //服务器接收客户端的消息
+    connect(m_tcpsocket,SIGNAL(disconnected()),m_tcpsocket,SLOT(deleteLater()));
 }
 void MainWindow::readMessage()//读取网络通讯接收报文
 {
@@ -581,14 +616,86 @@ void MainWindow::readMessage()//读取网络通讯接收报文
     QString str_server;
     int length=m_tcpsocket->bytesAvailable();
     m_tcpsocket->read(buf_server, length);
-//    char tmp[256];
-//    char *buf;
-    //char var;
-
 
     if(length>0)
     {
-        QDateTime *datatime=new QDateTime(QDateTime::currentDateTime());
+        QByteArray bufread_server=QByteArray(buf_server,length);
+        //界面显示接收的报文显示
+        ShowMsg(2,bufread_server);
+
+        int decode_dataty=threadTest.Dev_protocol.Decode(bufread_server);//threadTest.threadA.requestData
+        //基于读取的结果显示到界面
+        switch(decode_dataty)
+        {
+            case 21://以太网登录确认
+            {
+                ui->tableWidget_Result->setItem(8,2,new QTableWidgetItem(Dataclass.Result_internetlogin.Result_HCS));
+                ui->tableWidget_Result->setItem(8,3,new QTableWidgetItem(Dataclass.Result_internetlogin.Result_FCS));
+                ui->tableWidget_Result->setItem(8,4,new QTableWidgetItem(Dataclass.Result_internetlogin.Result_describe));
+
+                ui->tableWidget_Result->show();
+            }break;
+            case 22:
+            {
+                ui->tableWidget_Result->setItem(9,2,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_HCS));
+                ui->tableWidget_Result->setItem(9,3,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_FCS));
+                ui->tableWidget_Result->setItem(9,4,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_describe));
+
+                ui->tableWidget_Result->show();
+            }break;
+            case 23:
+            {
+                ui->tableWidget_Result->setItem(9,2,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_HCS));
+                ui->tableWidget_Result->setItem(9,3,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_FCS));
+                ui->tableWidget_Result->setItem(9,4,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_describe));
+
+                ui->tableWidget_Result->show();
+
+                //GPRS参数下设确认结束，断开当前连接
+                //m_tcpsocket->disconnect();
+                m_tcpsocket->close();
+                QMessageBox *msgfrm =new QMessageBox(this);
+                msgfrm->setText("以太网测试结束，当前连接已断开，请断开网线。  ");
+
+                msgfrm->show();
+
+            }break;
+            case 24://GPRS登录确认
+            {
+                ui->tableWidget_Result->setItem(10,2,new QTableWidgetItem(Dataclass.Result_gprslogin.Result_HCS));
+                ui->tableWidget_Result->setItem(10,3,new QTableWidgetItem(Dataclass.Result_gprslogin.Result_FCS));
+                ui->tableWidget_Result->setItem(10,4,new QTableWidgetItem(Dataclass.Result_gprslogin.Result_describe));
+
+                ui->tableWidget_Result->show();
+
+//                if(Dataclass.TestINFO.testSteps_currentLevel==3)
+//                {
+                    Dataclass.DEV_testprocess_end=true;//串口、网口、GPRS测试相关项，测试结束
+                    emit(this->threadTest.testprocess_end());
+//                }
+
+            }break;
+        }
+
+        if(decode_dataty==21||decode_dataty==24)//登录上线，回复确认
+        {
+            Dataclass.BufLen_send=threadTest.Dev_protocol.Encode(Dataclass.Buffer_send,101,Dataclass.get_DEV_addr(),Dataclass.get_ammeter_addr());
+            m_tcpsocket->write(Dataclass.Buffer_send);
+        }
+        else if(decode_dataty==25)//心跳帧确认
+        {
+            Dataclass.BufLen_send=threadTest.Dev_protocol.Encode(Dataclass.Buffer_send,102,Dataclass.get_DEV_addr(),Dataclass.get_ammeter_addr());
+            m_tcpsocket->write(Dataclass.Buffer_send);
+        }
+
+        if(Dataclass.Buffer_send.size()>0)
+        {//界面显示发送的报文显示
+            ShowMsg(1,Dataclass.Buffer_send);
+        }
+
+
+        /*
+        //QDateTime *datatime=new QDateTime(QDateTime::currentDateTime());
         if(buf_server[0]!=(char)0x68)//非法帧
             return;
         else
@@ -603,19 +710,19 @@ void MainWindow::readMessage()//读取网络通讯接收报文
                     Dataclass.Buffer_time.append(buf_server[adr_len+13+n]);
                 }
 
-                str_server="接收建立连接：";
-                str_server+=datatime->time().toString();
-                ui->textEdit_msg->append(str_server);
-                str_server.clear();
+//                str_server="接收建立连接：";
+//                str_server+=datatime->time().toString();
+//                ui->textEdit_msg->append(str_server);
+//                str_server.clear();
 
-                qDebug() << "receive num:" <<length;
-                for(int var=0;var<length;var++)
-                {
-                    str_server.append(QString::number(static_cast<unsigned char>(buf_server[var]), 16).toUpper());
-                    //str_server+=QString::number(buf_server[var], 16);//buf_server[var];//QString::fromUtf8(buf_server[var]);
-                    str_server+=" ";
-                }
-                ui->textEdit_msg->append(str_server);//界面显示接收报文显示
+//                qDebug() << "receive num:" <<length;
+//                for(int var=0;var<length;var++)
+//                {
+//                    str_server.append(QString::number(static_cast<unsigned char>(buf_server[var]), 16).toUpper());
+//                    //str_server+=QString::number(buf_server[var], 16);//buf_server[var];//QString::fromUtf8(buf_server[var]);
+//                    str_server+=" ";
+//                }
+//                ui->textEdit_msg->append(str_server);//界面显示接收报文显示
 
                 Dataclass.BufLen_send=threadTest.Dev_protocol.Encode(Dataclass.Buffer_send,101,Dataclass.get_DEV_addr(),Dataclass.get_ammeter_addr());
                 m_tcpsocket->write(Dataclass.Buffer_send);
@@ -627,22 +734,22 @@ void MainWindow::readMessage()//读取网络通讯接收报文
                 {
                     Dataclass.Buffer_time.append(buf_server[adr_len+13+n]);
                 }
-                str_server="接收心跳测试：";
-                str_server+=datatime->time().toString();
-                ui->textEdit_msg->append(str_server);
-                str_server.clear();
+//                str_server="接收心跳测试：";
+//                str_server+=datatime->time().toString();
+//                ui->textEdit_msg->append(str_server);
+//                str_server.clear();
 
-                qDebug() << "receive num:" <<length;
-//                QByteArray array(buf_server, length);
-//                ui->textEdit_msg->setText(QString(array.toHex()));
-                for(int var=0;var<length;var++)
-                {
-//                    int v = buf_server[var];
-//                    str_server+=QString::number(v, 16);//QString::fromUtf8(buf_server[var]);
-                    str_server.append(QString::number(static_cast<unsigned char>(buf_server[var]), 16).toUpper());
-                    str_server+=" ";
-                }
-                ui->textEdit_msg->append(str_server);//界面显示接收报文显示
+//                qDebug() << "receive num:" <<length;
+////                QByteArray array(buf_server, length);
+////                ui->textEdit_msg->setText(QString(array.toHex()));
+//                for(int var=0;var<length;var++)
+//                {
+////                    int v = buf_server[var];
+////                    str_server+=QString::number(v, 16);//QString::fromUtf8(buf_server[var]);
+//                    str_server.append(QString::number(static_cast<unsigned char>(buf_server[var]), 16).toUpper());
+//                    str_server+=" ";
+//                }
+//                ui->textEdit_msg->append(str_server);//界面显示接收报文显示
 
                 Dataclass.BufLen_send=threadTest.Dev_protocol.Encode(Dataclass.Buffer_send,102,Dataclass.get_DEV_addr(),Dataclass.get_ammeter_addr());
                 m_tcpsocket->write(Dataclass.Buffer_send);
@@ -651,35 +758,25 @@ void MainWindow::readMessage()//读取网络通讯接收报文
 
 
             if(Dataclass.Buffer_send.size()>0)
-            {
-//                QDateTime *datatime1=new QDateTime(QDateTime::currentDateTime());
-//                str_server.clear();
-//                str_server="确认回复：";
-//                str_server+=datatime1->time().toString();
-//                ui->textEdit_msg->append(str_server);
-//                str_server.clear();
-
-//                buf=Dataclass.Buffer_send.data();
-//                qDebug() << "send num:" <<Dataclass.Buffer_send.size();
-//                for(int var=0;var<Dataclass.Buffer_send.size();var++)
-//                {
-//                    ::snprintf(tmp,256, "%02X", (unsigned char)(*buf));
-//                    buf++;
-//                    str_server+=QString::fromUtf8(tmp);
-//                    str_server+=" ";
-//                }
-//                ui->textEdit_msg->append(str_server);//界面显示发送到的报文显示
-
+            {//界面显示发送的报文显示
                 ShowMsg(1,Dataclass.Buffer_send);
             }
 
 
         }
-
+        */
 
     }
 
 }
+
+void MainWindow::sendMessage_server()//发送
+{
+    if(Dataclass.Buffer_send.size()>0)
+        m_tcpsocket->write(Dataclass.Buffer_send);
+}
+
+
 void MainWindow::sendMessage()
 {
 
