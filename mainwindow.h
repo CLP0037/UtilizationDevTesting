@@ -47,12 +47,6 @@ private slots:
 
     void ShowMsg(int type,QByteArray buf_msg);
 
-    void on_action_Link_triggered();
-
-    void on_action_unLink_triggered();
-
-    void on_action_versionShow_triggered();
-
     void on_pushBtn_Start_clicked();
 
     void on_pushBtn_Stop_clicked();

@@ -61,7 +61,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>127.0.0.1</string>
+     <string>220.180.239.202</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_sPort_server">
@@ -74,7 +74,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>6666</string>
+     <string>10850</string>
     </property>
    </widget>
   </widget>

@@ -281,7 +281,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>192.168.8.85</string>
+     <string>192.168.8.241</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_12">
@@ -371,7 +371,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>127.0.0.1</string>
+     <string>192.168.8.85</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_sPort_server">
@@ -384,7 +384,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>6666</string>
+     <string>10850</string>
     </property>
    </widget>
   </widget>

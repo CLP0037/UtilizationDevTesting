@@ -57,5 +57,5 @@ void Paramconfig::ui_init(void)
         }
     }
 
-    ui->lineEdit_sIP->setDisabled(true);
+    //ui->lineEdit_sIP->setDisabled(true);
 }

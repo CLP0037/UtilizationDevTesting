@@ -3,11 +3,15 @@
 # Project created by QtCreator 2017-06-20T16:46:06
 #
 #-------------------------------------------------
-
+CONFIG += static
 QT       += serialport
 QT       += core gui
 QT       += network
 QT       += widgets
+
+#gitversion.pri
+#include($(CSG_ENV)/proj/defs.pri)
+include(gitversion.pri)
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

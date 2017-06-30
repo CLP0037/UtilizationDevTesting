@@ -21,6 +21,10 @@
   <property name="windowTitle">
    <string>用电产品测试软件</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="images/myResourses.qrc">
+    <normaloff>:/myImages/T_64.png</normaloff>:/myImages/T_64.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="pushBtn_Start">
     <property name="geometry">
@@ -352,10 +356,12 @@
     </property>
    </widget>
    <widget class="QMenu" name="menu">
+    <property name="tearOffEnabled">
+     <bool>false</bool>
+    </property>
     <property name="title">
      <string>软件版本</string>
     </property>
-    <addaction name="action_versionShow"/>
    </widget>
    <addaction name="menu1"/>
    <addaction name="menu"/>
@@ -369,17 +375,6 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="action_versionShow">
-   <property name="text">
-    <string>显示</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>黑体</family>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

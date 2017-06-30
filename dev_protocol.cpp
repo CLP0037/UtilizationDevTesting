@@ -40,6 +40,7 @@ int DEV_protocol::Encode(QByteArray &buf, int dataty,QString DEV_adr,QString amm
     //地址域
     if(DEV_adr=="AAAAAAAAAAAA"||DEV_adr=="")
     {
+        len_devaddr=8;//6+2
         buf.append(0x45);//buf[length++]=0x45;
         buf.append(0xAA);//buf[length++]=0xAA;
         buf.append(0xAA);//buf[length++]=0xAA;

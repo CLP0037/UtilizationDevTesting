@@ -21,6 +21,7 @@ TestThread::TestThread()
 
 }
 
+
 void TestThread::run()
 {
     while(Dataclass.DEV_testprocess)//true
@@ -363,7 +364,7 @@ void TestThread::run()
                 this->threadA.TxData.append(Dataclass.Buffer_send,Dataclass.BufLen_send);
                 this->threadA.changeTxState(true);
             }
-            else//网口发送
+            else if(Dataclass.TestINFO.testSteps_currentTeststep==12||Dataclass.TestINFO.testSteps_currentTeststep==13)//网口发送
             {
                 //m_tcpsocket->write(Dataclass.Buffer_send);
                 //sendmsg_server()
@@ -372,7 +373,7 @@ void TestThread::run()
 
         }
 
-        sleep(20);
+        sleep(3);
     }
 }
 
@@ -381,5 +382,6 @@ void TestThread::stop()
 //   TestThread.terminate();
 //   TestThread.wait();
    //threadTest
+    Dataclass.DEV_testprocess = false;
 
 }
