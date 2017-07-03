@@ -33,8 +33,8 @@ public:
     TestThread threadTest;
     //DEV_protocol Dev_protocol;
 
-    QTcpSocket *m_tcpsocket;
-    QTcpServer *m_tcpserver;
+    QTcpSocket *m_tcpsocket=NULL;
+    QTcpServer *m_tcpserver=NULL;
 
 
 

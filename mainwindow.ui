@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1076</width>
-    <height>598</height>
+    <height>549</height>
    </rect>
   </property>
   <property name="font">
@@ -23,7 +23,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="images/myResourses.qrc">
-    <normaloff>:/myImages/T_64.png</normaloff>:/myImages/T_64.png</iconset>
+    <normaloff>:/myImages/T_64.ico</normaloff>:/myImages/T_64.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="pushBtn_Start">
@@ -65,7 +65,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>190</y>
+      <y>200</y>
       <width>151</width>
       <height>61</height>
      </rect>
@@ -100,7 +100,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>295</y>
+      <y>310</y>
       <width>151</width>
       <height>61</height>
      </rect>
@@ -135,7 +135,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>400</y>
+      <y>430</y>
       <width>151</width>
       <height>61</height>
      </rect>
@@ -171,8 +171,8 @@
      <rect>
       <x>190</x>
       <y>80</y>
-      <width>811</width>
-      <height>431</height>
+      <width>871</width>
+      <height>411</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -185,10 +185,10 @@
      <widget class="QTableWidget" name="tableWidget_Result">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>0</x>
         <y>10</y>
-        <width>791</width>
-        <height>381</height>
+        <width>861</width>
+        <height>371</height>
        </rect>
       </property>
       <property name="editTriggers">
@@ -240,17 +240,17 @@
      <widget class="QTextEdit" name="textEdit_msg">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>0</x>
         <y>40</y>
-        <width>791</width>
-        <height>351</height>
+        <width>861</width>
+        <height>341</height>
        </rect>
       </property>
      </widget>
      <widget class="QPushButton" name="pushButton_clear">
       <property name="geometry">
        <rect>
-        <x>710</x>
+        <x>750</x>
         <y>0</y>
         <width>81</width>
         <height>31</height>
@@ -265,8 +265,8 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>40</y>
+      <x>200</x>
+      <y>30</y>
       <width>81</width>
       <height>31</height>
      </rect>
@@ -278,8 +278,8 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>40</y>
+      <x>540</x>
+      <y>30</y>
       <width>91</width>
       <height>31</height>
      </rect>
@@ -291,8 +291,8 @@
    <widget class="QLineEdit" name="lineEdit_devaddr">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>40</y>
+      <x>300</x>
+      <y>30</y>
       <width>181</width>
       <height>31</height>
      </rect>
@@ -304,8 +304,8 @@
    <widget class="QLineEdit" name="lineEdit_ammetervaddr">
     <property name="geometry">
      <rect>
-      <x>620</x>
-      <y>40</y>
+      <x>640</x>
+      <y>30</y>
       <width>211</width>
       <height>31</height>
      </rect>
@@ -350,21 +350,6 @@
      <height>23</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu1">
-    <property name="title">
-     <string>设备连接</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menu">
-    <property name="tearOffEnabled">
-     <bool>false</bool>
-    </property>
-    <property name="title">
-     <string>软件版本</string>
-    </property>
-   </widget>
-   <addaction name="menu1"/>
-   <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">

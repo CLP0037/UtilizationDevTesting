@@ -10,7 +10,6 @@ QT       += network
 QT       += widgets
 
 #gitversion.pri
-#include($(CSG_ENV)/proj/defs.pri)
 include(gitversion.pri)
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -52,3 +51,5 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     images/myResourses.qrc
+	
+#RC_FILE = myapp.rc

@@ -33,7 +33,7 @@ isEmpty(GIT_VERSIONMODIFY){
         isEmpty(GIT_COMMIT_COUNT) {
             GIT_COMMIT_COUNT = 0
         }
-        #GIT_VERSION = $$VERSION-$$GIT_COMMIT_COUNT-g$$GIT_VERSION#
+        GIT_VERSION = $$VERSION-$$GIT_COMMIT_COUNT-g$$GIT_VERSION
     }
 }
 

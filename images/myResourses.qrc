@@ -8,5 +8,7 @@
         <file>Pause_Normal_Red_64.png</file>
         <file>restart_64.png</file>
         <file>settings_backup_restore_64.png</file>
+        <file>T_64.ico</file>
+        <file>Configure_48.ico</file>
     </qresource>
 </RCC>

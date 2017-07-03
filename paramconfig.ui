@@ -21,6 +21,10 @@
   <property name="windowTitle">
    <string>参数配置</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="images/myResourses.qrc">
+    <normaloff>:/myImages/Configure_48.ico</normaloff>:/myImages/Configure_48.ico</iconset>
+  </property>
   <widget class="QPushButton" name="pushBtn_OK">
    <property name="geometry">
     <rect>
@@ -169,7 +173,7 @@
      </rect>
     </property>
     <property name="currentText">
-     <string>8</string>
+     <string>5</string>
     </property>
     <item>
      <property name="text">
@@ -332,6 +336,8 @@
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="images/myResourses.qrc"/>
+ </resources>
  <connections/>
 </ui>

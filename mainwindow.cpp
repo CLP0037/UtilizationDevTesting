@@ -23,9 +23,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    qDebug(GIT_VERSION);
-    qDebug(GIT_VERSIONMODIFY);
+//    qDebug(GIT_VERSION);
+//    qDebug(GIT_VERSIONMODIFY);
     ui->setupUi(this);
+
     QString wTitle="用电终端测试软件_";
 
     wTitle+=GIT_VERSION;
@@ -438,7 +439,7 @@ void MainWindow::displayRxData()//显示串口接收报文内容
                         if(decode_dataty==20)
                         {
                             QMessageBox *msgfrm =new QMessageBox(this);
-                            msgfrm->setText("以太网测试开始，请连接网线。  ");
+                            msgfrm->setText("以太网参数下设成功，点击确认后，请连接网线，可以开始以太网测试。  ");
 
                             msgfrm->show();
                         }
@@ -616,7 +617,7 @@ void MainWindow::readMessage()//读取网络通讯接收报文
 //                QMessageBox *msgfrm =new QMessageBox(this);
 //                msgfrm->setText("以太网测试结束，当前连接已断开，请断开网线，同时插入GPRS卡。  ");
 //                msgfrm->show();
-               QMessageBox::information(this, QString("提示"), QString("以太网测试结束，当前连接已断开，请断开网线，同时插入GPRS卡。  "), QMessageBox::tr("  确定(&O)  "));
+               QMessageBox::information(this, QString("提示"), QString("以太网测试结束，请断开网线，同时插入GPRS卡，完成以上操作后，点击确认，当前连接会断开，GPRS测试开始。  "), QMessageBox::tr("  确定(&O)  "));
                 m_tcpsocket->close();
 
             }break;
