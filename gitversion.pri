@@ -12,8 +12,8 @@ win32 {
 BASE_GIT_COMMAND = git --git-dir $$PWD/.git --work-tree $$PWD
 
 # Trying to get version from git tag / revision
-GIT_VERSION = $$system($$BASE_GIT_COMMAND describe --always --tags 2> $$NULL_DEVICE)
-#GIT_VERSION = $$system($$BASE_GIT_COMMAND describe --long 2> $$NULL_DEVICE)
+#GIT_VERSION = $$system($$BASE_GIT_COMMAND describe --always --tags 2> $$NULL_DEVICE)
+GIT_VERSION = $$system($$BASE_GIT_COMMAND describe --long 2> $$NULL_DEVICE)
 GIT_VERSIONMODIFY = $$system($$BASE_GIT_COMMAND status  --short -uno 2> $$NULL_DEVICE)
 #git status  --short -uno
 isEmpty(GIT_VERSIONMODIFY){
