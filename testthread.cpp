@@ -67,6 +67,34 @@ void TestThread::run()
                 Dataclass.BufLen_send=this->Dev_protocol.Encode(Dataclass.Buffer_send,2,Dataclass.get_DEV_addr(),Dataclass.get_ammeter_addr());
                 str_msg="设备当前时间读取: ";
                 Dataclass.TestINFO.test_resendtimes++;
+                Dataclass.Testinfo_Set.D_systime="";
+                //系统时间
+                QDateTime time_now = QDateTime::currentDateTime();
+                QString year=time_now.toString("yyyy");
+                QString month=time_now.toString("MM");
+                QString day=time_now.toString("dd");
+                QString hour=time_now.toString("hh");
+                QString minute=time_now.toString("mm");
+                QString second=time_now.toString("ss");
+                QString minisecond=time_now.toString("zzz");
+                Dataclass.Testinfo_Set.D_systime+=year;
+                Dataclass.Testinfo_Set.D_systime+="年-";
+                Dataclass.Testinfo_Set.D_systime+=month;
+                Dataclass.Testinfo_Set.D_systime+="月-";
+                Dataclass.Testinfo_Set.D_systime+=day;
+                Dataclass.Testinfo_Set.D_systime+="日";//"日-"
+
+                Dataclass.Testinfo_Set.D_systime_show=Dataclass.Testinfo_Set.D_systime;
+                Dataclass.Testinfo_Set.D_systime_show+="-";
+                Dataclass.Testinfo_Set.D_systime_show+=hour;
+                Dataclass.Testinfo_Set.D_systime_show+="时-";
+                Dataclass.Testinfo_Set.D_systime_show+=minute;
+                Dataclass.Testinfo_Set.D_systime_show+="分-";
+                Dataclass.Testinfo_Set.D_systime_show+=second;
+                Dataclass.Testinfo_Set.D_systime_show+="秒-";
+                Dataclass.Testinfo_Set.D_systime_show+=minisecond;
+                Dataclass.Testinfo_Set.D_systime_show+="毫秒";
+
             }
         }
 
@@ -104,9 +132,9 @@ void TestThread::run()
             }
         }
 
-        if(Dataclass.TestINFO.testSteps_currentTeststep==5)//step5===="电表有功电能读取转发1: "
+        if(Dataclass.TestINFO.testSteps_currentTeststep==5)//step5===="电表有功电能读取转发1: "=====不重发===未回应终端在忙
         {
-            if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_meterenergyRead_4851==true||(Dataclass.TestINFO.test_resendtimes>2)))
+            if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_meterenergyRead_4851==true||(Dataclass.TestINFO.test_resendtimes>1)))
                     ||(Dataclass.TestINFO.step_Selected[4]==false))//未选择当前测试项   收到成功回复  重发过两次
             {
                 Dataclass.TestINFO.testSteps_currentTeststep++;
@@ -121,9 +149,9 @@ void TestThread::run()
             }
         }
 
-        if(Dataclass.TestINFO.testSteps_currentTeststep==6)//step6===="电表有功电能读取转发2: "
+        if(Dataclass.TestINFO.testSteps_currentTeststep==6)//step6===="电表有功电能读取转发2: "=====不重发===未回应终端在忙
         {
-            if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_meterenergyRead_4852==true||(Dataclass.TestINFO.test_resendtimes>2)))
+            if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_meterenergyRead_4852==true||(Dataclass.TestINFO.test_resendtimes>1)))
                     ||(Dataclass.TestINFO.step_Selected[5]==false))//未选择当前测试项   收到成功回复  重发过两次
             {
                 Dataclass.TestINFO.testSteps_currentTeststep++;
@@ -373,7 +401,11 @@ void TestThread::run()
 
         }
 
-        sleep(3);
+        if(Dataclass.TestINFO.testSteps_currentTeststep==5||Dataclass.TestINFO.testSteps_currentTeststep==6)
+            sleep(11);//485读表转发比较慢等待6s
+        else
+            sleep(3);
+        //sleep(20);//调试用
     }
 }
 

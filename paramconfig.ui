@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>322</width>
-    <height>425</height>
+    <width>405</width>
+    <height>548</height>
    </rect>
   </property>
   <property name="font">
@@ -29,7 +29,7 @@
    <property name="geometry">
     <rect>
      <x>210</x>
-     <y>380</y>
+     <y>500</y>
      <width>101</width>
      <height>31</height>
     </rect>
@@ -173,7 +173,7 @@
      </rect>
     </property>
     <property name="currentText">
-     <string>5</string>
+     <string>8</string>
     </property>
     <item>
      <property name="text">
@@ -331,7 +331,126 @@
      </rect>
     </property>
     <property name="text">
-     <string>10850</string>
+     <string>14720</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_3">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>360</y>
+     <width>291</width>
+     <height>131</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>功能参数配置</string>
+   </property>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>终端版本类型：</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_10">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>60</y>
+      <width>141</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>电压检测电压(0.1V)：</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comBox_devInfoType">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>30</y>
+      <width>141</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="currentText">
+     <string>集中器II型_浙江_V3.0</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>集中器I型_江苏</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>集中器II型_浙江</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>集中器II型_浙江_V3.0</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>集中器II型_山东</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>集中器II型_国网送检</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_U_value">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>60</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>2200</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_11">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>121</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>电压检测判据(%)：</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_U_errorRange">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>90</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0.5</string>
     </property>
    </widget>
   </widget>

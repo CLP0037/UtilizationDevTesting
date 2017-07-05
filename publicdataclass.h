@@ -149,6 +149,56 @@ public:
 
     interParam INTERNET_Param;
 
+    //终端版本信息参数
+    int DEV_ver_info_TYPE;//当前测试版本类型
+    float D_voltage_errorRange;
+    typedef struct DEV_SYS_INFO{
+       QString  code;
+       QString  SW_version;
+       QString  SW_date;
+       QString  HW_version;
+       QString  HW_date;
+       QString  express_info;
+    }dev_version_information;
+
+    dev_version_information DEV_ver_info;
+
+    QString D_voltage_Dataset;
+    //终端测试info下设    没有具体信息的赋值类型标识
+    typedef struct DEV_testinfo_SET{
+        QString D_verinfo;
+        QString D_systime;
+        QString D_systime_show;
+
+        QString D_voltage;
+        QString D_yxchange;
+        QString D_meter4851;
+        QString D_meter4852;
+        QString D_ESAMinfo;
+        QString D_internetParam;
+        QString D_internetLogin;
+        QString D_gprsParam;
+        QString D_gprsLogin;
+    }DEV_testinfo_setdown;
+
+    DEV_testinfo_setdown Testinfo_Set;
+    //终端测试info读取
+    typedef struct DEV_testinfo_GET{
+        QString D_verinfo;
+        QString D_systime;
+        QString D_voltage;
+        QString D_yxchange;
+        QString D_meter4851;
+        QString D_meter4852;
+        QString D_ESAMinfo;
+        QString D_internetParam;
+        QString D_internetLogin;
+        QString D_gprsParam;
+        QString D_gprsLogin;
+    }DEV_testinfo_getup;
+
+    DEV_testinfo_getup Testinfo_Get;
+
 private:
 
     //串口参数

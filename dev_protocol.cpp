@@ -817,6 +817,7 @@ int DEV_protocol::Decode(QByteArray buf)
                     Dataclass.Result_version.Result_FCS="帧校验不正确";
                 }
                 Dataclass.Result_version.Result_describe="Recieve OK :";//
+                Dataclass.Testinfo_Get.D_verinfo="";
 
                 int item_num=buf[DEV_adr_len+17];//项目数
                 QByteArray describe_data=buf.mid(DEV_adr_len+18,buf.size()-(DEV_adr_len+19)-3);
@@ -826,6 +827,8 @@ int DEV_protocol::Decode(QByteArray buf)
                     current_len=describe_data[1];
                     Dataclass.Result_version.Result_describe+=QString(describe_data.mid(2,current_len));
                     Dataclass.Result_version.Result_describe+=" ";
+                    Dataclass.Testinfo_Get.D_verinfo+=QString(describe_data.mid(2,current_len));
+                    if(n!=item_num-1)Dataclass.Testinfo_Get.D_verinfo+="_";
                     describe_data.remove(0,(current_len+2));
                 }
 
@@ -854,36 +857,57 @@ int DEV_protocol::Decode(QByteArray buf)
 //                Dataclass.Result_time.Result_HCS="0x00";
 //                Dataclass.Result_time.Result_FCS="0x00";
                 Dataclass.Result_time.Result_describe="Recieve OK :";
+                Dataclass.Testinfo_Get.D_systime="";
 
                 QByteArray describe_data=buf.mid(DEV_adr_len+17,buf.size()-(DEV_adr_len+18)-3);
                 QByteArray test = describe_data.mid(0,2);
                 int test_int = (unsigned char)(test[1]) + (unsigned char) (test[0]) *256;
                 Dataclass.Result_time.Result_describe+=QString("%1").arg(test_int);//年
                 Dataclass.Result_time.Result_describe+="年-";
+                Dataclass.Testinfo_Get.D_systime+=QString("%1").arg(test_int);//年
+                Dataclass.Testinfo_Get.D_systime+="年-";
+
                 test =describe_data.mid(2,1);
                 test_int=(unsigned char)(test[0]);
                 Dataclass.Result_time.Result_describe+=QString("%1").arg(test_int);//月
                 Dataclass.Result_time.Result_describe+="月-";
+                Dataclass.Testinfo_Get.D_systime+=QString("%1").arg(test_int,2,10,QChar('0'));//月
+                Dataclass.Testinfo_Get.D_systime+="月-";
+
                 test =describe_data.mid(3,1);
                 test_int=(unsigned char)(test[0]);
                 Dataclass.Result_time.Result_describe+=QString("%1").arg(test_int);//日
                 Dataclass.Result_time.Result_describe+="日-";
+                Dataclass.Testinfo_Get.D_systime+=QString("%1").arg(test_int,2,10,QChar('0'));//日
+                Dataclass.Testinfo_Get.D_systime+="日";
+
                 test =describe_data.mid(4,1);
                 test_int=(unsigned char)(test[0]);
                 Dataclass.Result_time.Result_describe+=QString("%1").arg(test_int);//时
                 Dataclass.Result_time.Result_describe+="时-";
+//                Dataclass.Testinfo_Get.D_systime+=QString("%1").arg(test_int);//时
+//                Dataclass.Testinfo_Get.D_systime+="时-";
+
                 test =describe_data.mid(5,1);
                 test_int=(unsigned char)(test[0]);
                 Dataclass.Result_time.Result_describe+=QString("%1").arg(test_int);//分
                 Dataclass.Result_time.Result_describe+="分-";
+//                Dataclass.Testinfo_Get.D_systime+=QString("%1").arg(test_int);//分
+//                Dataclass.Testinfo_Get.D_systime+="分-";
+
                 test =describe_data.mid(6,1);
                 test_int=(unsigned char)(test[0]);
                 Dataclass.Result_time.Result_describe+=QString("%1").arg(test_int);//秒
                 Dataclass.Result_time.Result_describe+="秒-";
+//                Dataclass.Testinfo_Get.D_systime+=QString("%1").arg(test_int);//秒
+//                Dataclass.Testinfo_Get.D_systime+="秒-";
+
                 test =describe_data.mid(7,2);
                 test_int=(unsigned char)(test[0]);
                 Dataclass.Result_time.Result_describe+=QString::number(test_int);//毫秒
                 Dataclass.Result_time.Result_describe+="毫秒";
+//                Dataclass.Testinfo_Get.D_systime+=QString::number(test_int);//毫秒
+//                Dataclass.Testinfo_Get.D_systime+="毫秒";
 
                 dataty=12;
             }
@@ -910,6 +934,7 @@ int DEV_protocol::Decode(QByteArray buf)
 //                Dataclass.Result_voltage.Result_HCS="0x00";
 //                Dataclass.Result_voltage.Result_FCS="0x00";
                 Dataclass.Result_voltage.Result_describe="Recieve OK :";
+                Dataclass.Testinfo_Get.D_voltage="";
 
                 int item_num=buf[DEV_adr_len+17];//项目数
                 QByteArray describe_data=buf.mid(DEV_adr_len+18,buf.size()-(DEV_adr_len+19)-3);
@@ -920,7 +945,12 @@ int DEV_protocol::Decode(QByteArray buf)
                     QByteArray test = describe_data.mid(0,3);
                     int test_int = (unsigned char)(test[2]) + (unsigned char) (test[1]) *256;
                     Dataclass.Result_voltage.Result_describe+=QString("%1").arg(test_int);
-                    Dataclass.Result_voltage.Result_describe+=" ";
+                    Dataclass.Testinfo_Get.D_voltage+=QString("%1").arg(test_int);
+                    if(item_num>1)
+                    {
+                       Dataclass.Result_voltage.Result_describe+="_";
+                       Dataclass.Testinfo_Get.D_voltage+="_";
+                    }
                     describe_data.remove(0,3);
                 }
                 dataty=13;
@@ -948,6 +978,7 @@ int DEV_protocol::Decode(QByteArray buf)
 //                Dataclass.Result_yxchange.Result_HCS="0x00";
 //                Dataclass.Result_yxchange.Result_FCS="0x00";
                 Dataclass.Result_yxchange.Result_describe="Recieve OK :";
+                Dataclass.Testinfo_Get.D_yxchange="";
 
                 int item_num=buf[DEV_adr_len+19];//项目数
                 QByteArray describe_data=buf.mid(DEV_adr_len+20,buf.size()-(DEV_adr_len+19)-3);
@@ -959,11 +990,17 @@ int DEV_protocol::Decode(QByteArray buf)
                     Dataclass.Result_yxchange.Result_describe+="类型：";
                     int test_int = (unsigned char)(test[0]);
                     Dataclass.Result_yxchange.Result_describe+=QString("%1").arg(test_int);
-                    Dataclass.Result_yxchange.Result_describe+=",";
-                    Dataclass.Result_yxchange.Result_describe+="值：";
+                    Dataclass.Result_yxchange.Result_describe+=",值：";
+                    Dataclass.Testinfo_Get.D_yxchange+="类型：";
+                    Dataclass.Testinfo_Get.D_yxchange+=QString("%1").arg(test_int);
+                    Dataclass.Testinfo_Get.D_yxchange+=",值：";
+
                     test_int = (unsigned char)(test[1]);
                     Dataclass.Result_yxchange.Result_describe+=QString("%1").arg(test_int);
-                    Dataclass.Result_yxchange.Result_describe+=" ";
+                    Dataclass.Result_yxchange.Result_describe+=";";
+                    Dataclass.Testinfo_Get.D_yxchange+=QString("%1").arg(test_int);
+                    //if(n<(item_num-1))
+                        Dataclass.Testinfo_Get.D_yxchange+=";";
                     describe_data.remove(0,2);
                 }
 
@@ -991,6 +1028,8 @@ int DEV_protocol::Decode(QByteArray buf)
                 }
                 Dataclass.Result_ESAM.Result_describe="Recieve OK :";
                 int item_num=buf[DEV_adr_len+17];//内容报文长度
+                Dataclass.Testinfo_Get.D_ESAMinfo="";
+                if(item_num==4)Dataclass.Testinfo_Get.D_ESAMinfo="信息长度：4位";//信息长度：4位
                 QByteArray describe_data=buf.mid(DEV_adr_len+18,buf.size()-(DEV_adr_len+18)-3-2);
                 char *buf;
                 char tmp[256];
@@ -1008,41 +1047,67 @@ int DEV_protocol::Decode(QByteArray buf)
         //转发读取电表
         else if(((buf[DEV_adr_len+8]&0x0f)==(char)0x09)&&(buf[DEV_adr_len+9]==(char)0x07))//09 07 00
         {
-            if((buf[DEV_adr_len+11]==(char)0xF2)&&(buf[DEV_adr_len+12]==(char)0x01)&&(buf[DEV_adr_len+13]==(char)0x02))//读取电表
+            if((buf[DEV_adr_len+11]==(char)0xF2)&&(buf[DEV_adr_len+12]==(char)0x01)&&(buf[DEV_adr_len+13]==(char)0x02))//读取电表成功
             {
+                if(Dataclass.TestINFO.testSteps_currentTeststep==5||Dataclass.TestINFO.testSteps_currentTeststep==6)
+                {
+                    if(HCS_show==HCS_caculate)//=====
+                    {
+                        Dataclass.Result_meterenergy.Result_HCS=QString::number(HCS_caculate,16);
+                    }
+                    else
+                    {
+                        Dataclass.Result_meterenergy.Result_HCS="帧校验不正确";
+                    }
+                    if(FCS_show==FCS_caculate)//=====
+                    {
+                        Dataclass.Result_meterenergy.Result_FCS=QString::number(FCS_caculate,16);
+                    }
+                    else
+                    {
+                        Dataclass.Result_meterenergy.Result_FCS="帧校验不正确";
+                    }
+    //                Dataclass.Result_meterenergy.Result_HCS="0x00";
+    //                Dataclass.Result_meterenergy.Result_FCS="0x00";
+
+                    Dataclass.Testinfo_Get.D_meter4851="类型标识位：";
+                    Dataclass.Testinfo_Get.D_meter4852="类型标识位：";
+                    if(buf[DEV_adr_len+30]==(char)0x18)
+                    {
+                        Dataclass.Result_meterenergy.Result_describe="Recieve OK :";
 
 
-                if(HCS_show==HCS_caculate)//=====
-                {
-                    Dataclass.Result_meterenergy.Result_HCS=QString::number(HCS_caculate,16);
-                }
-                else
-                {
-                    Dataclass.Result_meterenergy.Result_HCS="帧校验不正确";
-                }
-                if(FCS_show==FCS_caculate)//=====
-                {
-                    Dataclass.Result_meterenergy.Result_FCS=QString::number(FCS_caculate,16);
-                }
-                else
-                {
-                    Dataclass.Result_meterenergy.Result_FCS="帧校验不正确";
-                }
-//                Dataclass.Result_meterenergy.Result_HCS="0x00";
-//                Dataclass.Result_meterenergy.Result_FCS="0x00";
-                Dataclass.Result_meterenergy.Result_describe="Recieve OK :";
+                        int item_num=buf[DEV_adr_len+16];//转发报文长度
+                        QByteArray describe_data=buf.mid(DEV_adr_len+17,buf.size()-(DEV_adr_len+17)-3-2);
+                        char *buf_data;
+                        char tmp[256];
+                        buf_data=describe_data.data();
+                        for(int n=0;n<item_num;n++)
+                        {
+                            ::snprintf(tmp,256, "%02X", (unsigned char)(*buf_data));
+                            buf_data++;
+                            Dataclass.Result_meterenergy.Result_describe+=QString::fromUtf8(tmp);
+                            Dataclass.Result_meterenergy.Result_describe+=" ";
+                            if(n>=14&&n<=17)
+                            {
+                                if(buf[DEV_adr_len+14]==(char)0x01)
+                                {
+                                    Dataclass.Testinfo_Get.D_meter4851+=QString::fromUtf8(tmp);
+                                    Dataclass.Testinfo_Get.D_meter4851+=" ";
+                                }
+                                else if(buf[DEV_adr_len+14]==(char)0x02)
+                                {
+                                    Dataclass.Testinfo_Get.D_meter4852+=QString::fromUtf8(tmp);
+                                    Dataclass.Testinfo_Get.D_meter4852+=" ";
+                                }
+                            }
+                        }
+                    }
+                    else
+                        Dataclass.Result_meterenergy.Result_describe="Recieve ERROR";
 
-                int item_num=buf[DEV_adr_len+16];//转发报文长度
-                QByteArray describe_data=buf.mid(DEV_adr_len+17,buf.size()-(DEV_adr_len+17)-3-2);
-                char *buf_data;
-                char tmp[256];
-                buf_data=describe_data.data();
-                for(int n=0;n<item_num;n++)
-                {
-                    ::snprintf(tmp,256, "%02X", (unsigned char)(*buf_data));
-                    buf_data++;
-                    Dataclass.Result_meterenergy.Result_describe+=QString::fromUtf8(tmp);
-                    Dataclass.Result_meterenergy.Result_describe+=" ";
+
+
                 }
 
                 //char nnn=buf[DEV_adr_len+14];
@@ -1094,6 +1159,7 @@ int DEV_protocol::Decode(QByteArray buf)
                     Dataclass.Result_gprsParam.Result_FCS="帧校验不正确";
                 }
                 Dataclass.Result_gprsParam.Result_describe="Recieve OK";
+                Dataclass.Testinfo_Get.D_internetParam="";
                 if((buf[DEV_adr_len+13]==(char)0x02))//公网通信模块1确认 属性2
                 {
                     Dataclass.DEV_gprsParamset_1=true;
@@ -1128,6 +1194,7 @@ int DEV_protocol::Decode(QByteArray buf)
                     Dataclass.Result_internetParam.Result_FCS="帧校验不正确";
                 }
                 Dataclass.Result_internetParam.Result_describe="Recieve OK";
+                Dataclass.Testinfo_Get.D_gprsParam="";
 
                 if((buf[DEV_adr_len+13]==(char)0x02))//以太网通信模块1确认 属性2
                 {

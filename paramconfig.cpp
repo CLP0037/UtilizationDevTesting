@@ -34,6 +34,13 @@ void Paramconfig::on_pushBtn_OK_clicked()//确定====更新串口网口连接参
     Dataclass.set_IP_server(ui->lineEdit_sIP->text());
     Dataclass.set_Port_server(ui->lineEdit_sPort->text().trimmed().toInt());
 
+
+    //测试相关参数
+    Dataclass.DEV_ver_info_TYPE=ui->comBox_devInfoType->currentIndex();//当前终端类型
+    Dataclass.D_voltage_Dataset=ui->lineEdit_U_value->text().trimmed();//电压档位值
+    Dataclass.D_voltage_errorRange=ui->lineEdit_U_errorRange->text().toFloat();//电压误差
+
+
     accept();
 }
 

@@ -16,6 +16,7 @@
 #include <QTableWidgetItem>
 #include <QDialog>  //对话框显示
 #include <QMessageBox>
+#include <QSettings>
 
 extern PublicDataclass Dataclass;
 
@@ -39,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //设置行列数
     ui->tableWidget_Result->setRowCount(11);//11行
-    ui->tableWidget_Result->setColumnCount(5);
+    ui->tableWidget_Result->setColumnCount(7);//5+2列
 
     //第2列====测试项目名称
     //
@@ -57,9 +58,20 @@ MainWindow::MainWindow(QWidget *parent) :
     //
     ui->tableWidget_Result->setItem(10,1,new QTableWidgetItem("GPRS登录"));
 
+    ui->tableWidget_Result->setColumnWidth(0,60);
+    ui->tableWidget_Result->setColumnWidth(1,140);
+    ui->tableWidget_Result->setColumnWidth(2,60);
+    ui->tableWidget_Result->setColumnWidth(3,60);
+    ui->tableWidget_Result->setColumnWidth(4,300);
+    ui->tableWidget_Result->setColumnWidth(5,400);
+    //ui->tableWidget_Result->setColumnWidth(6,60);
+    ui->tableWidget_Result->horizontalHeader()->setStretchLastSection(true);//*设置表格是否充满，即行末不留空*
 
     ui->tableWidget_Result->setAlternatingRowColors(1); //隔行显示颜色
-    ui->tableWidget_Result->horizontalHeader()->setStretchLastSection(true);
+
+    //frame.setFixedSize(400,700);
+    this->setFixedSize(1400,550);
+
     ui->tableWidget_Result->show();
 
     for(int n=0;n<11;n++)//第1列为复选框
@@ -73,6 +85,9 @@ MainWindow::MainWindow(QWidget *parent) :
         }
     }
      connect(ui->tableWidget_Result, SIGNAL(cellChanged(int,int)), this, SLOT(changeTest(int, int)));
+
+     //ui->tableWidget_Result->item(0,1)->setBackgroundColor(QColor(0xFF,0xFF,0x00,127));
+     //设置某行某列的背景色====前三位对应RGB值，第四位对应透明度值，127对应半透明
 
      ui->tableWidget_Result->setEditTriggers(QAbstractItemView::NoEditTriggers); //即可设置整个表格不可编辑
 
@@ -217,13 +232,166 @@ void MainWindow::on_pushBtn_Start_clicked()//启动测试
         ui->pushBtn_Stop->setDisabled(false);
         ui->pushBtn_Reset->setDisabled(true);
         ui->pushBtn_Restart->setDisabled(true);
+        ui->btn_unLink->setDisabled(true);
 
         //清空结果显示
+        //从配置文件中读取参考对比信息
+        QString iniFilePath=QCoreApplication::applicationDirPath()+"/sys.ini";
+        QSettings settings(iniFilePath,QSettings::IniFormat);
+
+
+        switch(Dataclass.DEV_ver_info_TYPE)
+        {
+            case 0:
+            {
+                Dataclass.DEV_ver_info.code=settings.value("VER_NO_00/code").toString().trimmed();
+                Dataclass.DEV_ver_info.SW_version=settings.value("VER_NO_00/SW_version").toString().trimmed();
+                Dataclass.DEV_ver_info.SW_date=settings.value("VER_NO_00/SW_date").toString().trimmed();
+                Dataclass.DEV_ver_info.HW_version=settings.value("VER_NO_00/HW_version").toString().trimmed();
+                Dataclass.DEV_ver_info.HW_date=settings.value("VER_NO_00/HW_date").toString().trimmed();
+                Dataclass.DEV_ver_info.express_info=settings.value("VER_NO_00/express_info").toString().trimmed();
+            }break;
+            case 1:
+            {
+                Dataclass.DEV_ver_info.code=settings.value("VER_NO_01/code").toString().trimmed();
+                Dataclass.DEV_ver_info.SW_version=settings.value("VER_NO_01/SW_version").toString().trimmed();
+                Dataclass.DEV_ver_info.SW_date=settings.value("VER_NO_01/SW_date").toString().trimmed();
+                Dataclass.DEV_ver_info.HW_version=settings.value("VER_NO_01/HW_version").toString().trimmed();
+                Dataclass.DEV_ver_info.HW_date=settings.value("VER_NO_01/HW_date").toString().trimmed();
+                Dataclass.DEV_ver_info.express_info=settings.value("VER_NO_01/express_info").toString().trimmed();
+
+            }break;
+            case 2:
+            {
+                Dataclass.DEV_ver_info.code=settings.value("VER_NO_02/code").toString().trimmed();
+                Dataclass.DEV_ver_info.SW_version=settings.value("VER_NO_02/SW_version").toString().trimmed();
+                Dataclass.DEV_ver_info.SW_date=settings.value("VER_NO_02/SW_date").toString().trimmed();
+                Dataclass.DEV_ver_info.HW_version=settings.value("VER_NO_02/HW_version").toString().trimmed();
+                Dataclass.DEV_ver_info.HW_date=settings.value("VER_NO_02/HW_date").toString().trimmed();
+                Dataclass.DEV_ver_info.express_info=settings.value("VER_NO_02/express_info").toString().trimmed();
+            }break;
+            case 3:
+            {
+                Dataclass.DEV_ver_info.code=settings.value("VER_NO_03/code").toString().trimmed();
+                Dataclass.DEV_ver_info.SW_version=settings.value("VER_NO_03/SW_version").toString().trimmed();
+                Dataclass.DEV_ver_info.SW_date=settings.value("VER_NO_03/SW_date").toString().trimmed();
+                Dataclass.DEV_ver_info.HW_version=settings.value("VER_NO_03/HW_version").toString().trimmed();
+                Dataclass.DEV_ver_info.HW_date=settings.value("VER_NO_03/HW_date").toString().trimmed();
+                Dataclass.DEV_ver_info.express_info=settings.value("VER_NO_03/express_info").toString().trimmed();
+            }break;
+            case 4:
+            {
+                Dataclass.DEV_ver_info.code=settings.value("VER_NO_04/code").toString().trimmed();
+                Dataclass.DEV_ver_info.SW_version=settings.value("VER_NO_04/SW_version").toString().trimmed();
+                Dataclass.DEV_ver_info.SW_date=settings.value("VER_NO_04/SW_date").toString().trimmed();
+                Dataclass.DEV_ver_info.HW_version=settings.value("VER_NO_04/HW_version").toString().trimmed();
+                Dataclass.DEV_ver_info.HW_date=settings.value("VER_NO_04/HW_date").toString().trimmed();
+                Dataclass.DEV_ver_info.express_info=settings.value("VER_NO_04/express_info").toString().trimmed();
+            }break;
+        }
+
+        //原始参考版本信息
+        Dataclass.Testinfo_Set.D_verinfo=Dataclass.DEV_ver_info.code;
+        Dataclass.Testinfo_Set.D_verinfo+="_";
+        Dataclass.Testinfo_Set.D_verinfo+=Dataclass.DEV_ver_info.SW_version;
+        Dataclass.Testinfo_Set.D_verinfo+="_";
+        Dataclass.Testinfo_Set.D_verinfo+=Dataclass.DEV_ver_info.SW_date;
+        Dataclass.Testinfo_Set.D_verinfo+="_";
+        Dataclass.Testinfo_Set.D_verinfo+=Dataclass.DEV_ver_info.HW_version;
+        Dataclass.Testinfo_Set.D_verinfo+="_";
+        Dataclass.Testinfo_Set.D_verinfo+=Dataclass.DEV_ver_info.HW_date;
+        Dataclass.Testinfo_Set.D_verinfo+="_";
+        Dataclass.Testinfo_Set.D_verinfo+=Dataclass.DEV_ver_info.express_info;
+
+        Dataclass.Testinfo_Set.D_systime_show="SYSTEM_TIME";
+//        Dataclass.Testinfo_Set.D_voltage=ui->lineEdit_U_value->text().trimmed();//电压档位值
+//        Dataclass.D_voltage_errorRange=ui->lineEdit_U_errorRange->text().toFloat();//电压误差
+        Dataclass.Testinfo_Set.D_voltage="";
+        Dataclass.Testinfo_Set.D_voltage+="输入电压:";
+        Dataclass.Testinfo_Set.D_voltage+=Dataclass.D_voltage_Dataset;
+        Dataclass.Testinfo_Set.D_voltage+= ";误差范围(%):";
+        QString str_V;
+        str_V.setNum(Dataclass.D_voltage_errorRange);
+        Dataclass.Testinfo_Set.D_voltage+=str_V;
+
+        Dataclass.Testinfo_Set.D_yxchange="类型：17,值：1;类型：17,值：1;";
+        Dataclass.Testinfo_Set.D_meter4851="类型标识位：33 32 34 33";
+        Dataclass.Testinfo_Set.D_meter4852="类型标识位：33 32 34 33";
+        Dataclass.Testinfo_Set.D_ESAMinfo="信息长度：4位";
+        //Dataclass.Testinfo_Set.D_internetParam="";
+        Dataclass.Testinfo_Set.D_internetLogin="======";
+        //Dataclass.Testinfo_Set.D_gprsParam="";
+        Dataclass.Testinfo_Set.D_gprsLogin="======";
+
+
+
         for(int n=0;n<11;n++)
         {
             ui->tableWidget_Result->setItem(n,2,new QTableWidgetItem(""));
             ui->tableWidget_Result->setItem(n,3,new QTableWidgetItem(""));
             ui->tableWidget_Result->setItem(n,4,new QTableWidgetItem(""));
+            ui->tableWidget_Result->setItem(n,6,new QTableWidgetItem(""));
+            //ui->tableWidget_Result->item(0,6)->setBackgroundColor(QColor(0xFF,0x00,0x00,127));//红色
+
+            if(Dataclass.TestINFO.step_Selected[n]==true)
+            {
+                switch(n)
+                {
+                    case 0:
+                    {
+                        ui->tableWidget_Result->setItem(0,5,new QTableWidgetItem(Dataclass.Testinfo_Set.D_verinfo));
+                    }break;
+                    case 1:
+                    {
+                        ui->tableWidget_Result->setItem(1,5,new QTableWidgetItem(Dataclass.Testinfo_Set.D_systime_show));
+                    }break;
+                    case 2:
+                    {
+                        ui->tableWidget_Result->setItem(2,5,new QTableWidgetItem(Dataclass.Testinfo_Set.D_voltage));
+                    }break;
+                    case 3:
+                    {
+                        ui->tableWidget_Result->setItem(3,5,new QTableWidgetItem(Dataclass.Testinfo_Set.D_yxchange));
+                    }break;
+                    case 4:
+                    {
+                        ui->tableWidget_Result->setItem(4,5,new QTableWidgetItem(Dataclass.Testinfo_Set.D_meter4851));
+                    }break;
+                    case 5:
+                    {
+                        ui->tableWidget_Result->setItem(5,5,new QTableWidgetItem(Dataclass.Testinfo_Set.D_meter4852));
+                    }break;
+                    case 6:
+                    {
+                        ui->tableWidget_Result->setItem(6,5,new QTableWidgetItem(Dataclass.Testinfo_Set.D_ESAMinfo));
+                    }break;
+                    case 7:
+                    {
+                        ui->tableWidget_Result->setItem(7,5,new QTableWidgetItem(Dataclass.Testinfo_Set.D_internetParam));
+
+                    }break;
+                    case 8:
+                    {
+                        ui->tableWidget_Result->setItem(8,5,new QTableWidgetItem(Dataclass.Testinfo_Set.D_internetLogin));
+
+                    }break;
+                    case 9:
+                    {
+                        ui->tableWidget_Result->setItem(9,5,new QTableWidgetItem(Dataclass.Testinfo_Set.D_gprsParam));
+                    }break;
+                    case 10:
+                    {
+                        ui->tableWidget_Result->setItem(10,5,new QTableWidgetItem(Dataclass.Testinfo_Set.D_gprsLogin));
+                    }break;
+
+                }
+            }
+            else
+            {
+                ui->tableWidget_Result->setItem(n,5,new QTableWidgetItem(""));
+            }
+
+
         }
         ui->tableWidget_Result->show();
     }
@@ -231,6 +399,13 @@ void MainWindow::on_pushBtn_Start_clicked()//启动测试
 
 void MainWindow::on_pushBtn_Stop_clicked()//停止测试
 {
+//    try
+//    {
+
+//    }
+//    catch(){
+//       qDebug() << "CRASH!";
+//    }
     ui->lineEdit_devaddr->setDisabled(false);
     ui->lineEdit_ammetervaddr->setDisabled(false);
 
@@ -244,6 +419,7 @@ void MainWindow::on_pushBtn_Stop_clicked()//停止测试
     ui->pushBtn_Stop->setDisabled(true);
     ui->pushBtn_Reset->setDisabled(false);
     ui->pushBtn_Restart->setDisabled(false);
+    ui->btn_unLink->setDisabled(false);
 }
 
 void MainWindow::on_pushBtn_Reset_clicked()//恢复出厂设置====21
@@ -364,6 +540,20 @@ void MainWindow::displayRxData()//显示串口接收报文内容
 
                 //Decode(QByteArray buf);
                 int decode_dataty=threadTest.Dev_protocol.Decode(Dataclass.buf_rev);//threadTest.threadA.requestData
+
+
+//                Dataclass.Testinfo_Set.D_verinfo+=Dataclass.DEV_ver_info.express_info;
+//                Dataclass.Testinfo_Set.D_systime="SYSTEM_TIME";
+//                Dataclass.Testinfo_Set.D_voltage="";
+//                Dataclass.Testinfo_Set.D_yxchange="类型:17,值:1;类型:17,值:1";
+//                Dataclass.Testinfo_Set.D_meter4851="类型标示位:33 32 34 33";
+//                Dataclass.Testinfo_Set.D_meter4852="类型标示位:33 32 34 33";
+//                Dataclass.Testinfo_Set.D_ESAMinfo="信息长度：4位";
+//                Dataclass.Testinfo_Set.D_internetParam="";
+//                Dataclass.Testinfo_Set.D_internetLogin="======";
+//                Dataclass.Testinfo_Set.D_gprsParam="";
+//                Dataclass.Testinfo_Set.D_gprsLogin="======";
+
                 //基于读取的结果显示到界面
                 switch(decode_dataty)
                 {
@@ -373,6 +563,18 @@ void MainWindow::displayRxData()//显示串口接收报文内容
                         ui->tableWidget_Result->setItem(0,3,new QTableWidgetItem(Dataclass.Result_version.Result_FCS));
                         ui->tableWidget_Result->setItem(0,4,new QTableWidgetItem(Dataclass.Result_version.Result_describe));
 
+                        if((Dataclass.Result_version.Result_HCS=="校验和不正确")
+                                ||(Dataclass.Result_version.Result_HCS=="校验和不正确")
+                                ||(Dataclass.Testinfo_Set.D_verinfo!=Dataclass.Testinfo_Get.D_verinfo))
+                        {
+                            ui->tableWidget_Result->setItem(0,6,new QTableWidgetItem("不合格"));
+                            ui->tableWidget_Result->item(0,6)->setBackgroundColor(QColor(0xFF,0x00,0x00,127));//红色
+                        }
+                        else
+                        {
+                            ui->tableWidget_Result->setItem(0,6,new QTableWidgetItem("合格"));
+                            ui->tableWidget_Result->item(0,6)->setBackgroundColor(QColor(0x00,0xEE,0x00,127));//绿色
+                        }
                         ui->tableWidget_Result->show();
                     }break;
                     case 12:
@@ -380,7 +582,19 @@ void MainWindow::displayRxData()//显示串口接收报文内容
                         ui->tableWidget_Result->setItem(1,2,new QTableWidgetItem(Dataclass.Result_time.Result_HCS));
                         ui->tableWidget_Result->setItem(1,3,new QTableWidgetItem(Dataclass.Result_time.Result_FCS));
                         ui->tableWidget_Result->setItem(1,4,new QTableWidgetItem(Dataclass.Result_time.Result_describe));
-
+                        ui->tableWidget_Result->setItem(1,5,new QTableWidgetItem(Dataclass.Testinfo_Set.D_systime_show));
+                        if((Dataclass.Result_time.Result_HCS=="校验和不正确")
+                                ||(Dataclass.Result_time.Result_HCS=="校验和不正确")
+                                ||(Dataclass.Testinfo_Set.D_systime!=Dataclass.Testinfo_Get.D_systime))
+                        {
+                            ui->tableWidget_Result->setItem(1,6,new QTableWidgetItem("不合格"));
+                            ui->tableWidget_Result->item(1,6)->setBackgroundColor(QColor(0xFF,0x00,0x00,127));//红色
+                        }
+                        else
+                        {
+                            ui->tableWidget_Result->setItem(1,6,new QTableWidgetItem("合格"));
+                            ui->tableWidget_Result->item(1,6)->setBackgroundColor(QColor(0x00,0xEE,0x00,127));//绿色
+                        }
                         ui->tableWidget_Result->show();
                     }break;
                     case 13:
@@ -389,6 +603,20 @@ void MainWindow::displayRxData()//显示串口接收报文内容
                         ui->tableWidget_Result->setItem(2,3,new QTableWidgetItem(Dataclass.Result_voltage.Result_FCS));
                         ui->tableWidget_Result->setItem(2,4,new QTableWidgetItem(Dataclass.Result_voltage.Result_describe));
 
+                        float error=0;
+                        error=(Dataclass.Testinfo_Get.D_verinfo.toInt()-Dataclass.Testinfo_Set.D_verinfo.toInt())*0.1;
+                        if((Dataclass.Result_voltage.Result_HCS=="校验和不正确")
+                                ||(Dataclass.Result_voltage.Result_HCS=="校验和不正确")
+                                ||(error>qAbs(Dataclass.D_voltage_errorRange*0.01*Dataclass.Testinfo_Set.D_verinfo.toInt())))
+                        {
+                            ui->tableWidget_Result->setItem(2,6,new QTableWidgetItem("不合格"));
+                            ui->tableWidget_Result->item(2,6)->setBackgroundColor(QColor(0xFF,0x00,0x00,127));//红色
+                        }
+                        else
+                        {
+                            ui->tableWidget_Result->setItem(2,6,new QTableWidgetItem("合格"));
+                            ui->tableWidget_Result->item(2,6)->setBackgroundColor(QColor(0x00,0xEE,0x00,127));//绿色
+                        }
                         ui->tableWidget_Result->show();
                     }break;
                     case 14:
@@ -397,6 +625,18 @@ void MainWindow::displayRxData()//显示串口接收报文内容
                         ui->tableWidget_Result->setItem(3,3,new QTableWidgetItem(Dataclass.Result_yxchange.Result_FCS));
                         ui->tableWidget_Result->setItem(3,4,new QTableWidgetItem(Dataclass.Result_yxchange.Result_describe));
 
+                        if((Dataclass.Result_yxchange.Result_HCS=="校验和不正确")
+                                ||(Dataclass.Result_yxchange.Result_HCS=="校验和不正确")
+                                ||(Dataclass.Testinfo_Set.D_yxchange!=Dataclass.Testinfo_Get.D_yxchange))
+                        {
+                            ui->tableWidget_Result->setItem(3,6,new QTableWidgetItem("不合格"));
+                            ui->tableWidget_Result->item(3,6)->setBackgroundColor(QColor(0xFF,0x00,0x00,127));//红色
+                        }
+                        else
+                        {
+                            ui->tableWidget_Result->setItem(3,6,new QTableWidgetItem("合格"));
+                            ui->tableWidget_Result->item(3,6)->setBackgroundColor(QColor(0x00,0xEE,0x00,127));//绿色
+                        }
                         ui->tableWidget_Result->show();
                     }break;
                     case 15://4851
@@ -405,6 +645,18 @@ void MainWindow::displayRxData()//显示串口接收报文内容
                         ui->tableWidget_Result->setItem(4,3,new QTableWidgetItem(Dataclass.Result_meterenergy.Result_FCS));
                         ui->tableWidget_Result->setItem(4,4,new QTableWidgetItem(Dataclass.Result_meterenergy.Result_describe));
 
+                        if((Dataclass.Result_meterenergy.Result_HCS=="校验和不正确")
+                                ||(Dataclass.Result_meterenergy.Result_HCS=="校验和不正确")
+                                ||(Dataclass.Testinfo_Set.D_meter4851.trimmed()!=Dataclass.Testinfo_Get.D_meter4851.trimmed()))
+                        {
+                            ui->tableWidget_Result->setItem(4,6,new QTableWidgetItem("不合格"));
+                            ui->tableWidget_Result->item(4,6)->setBackgroundColor(QColor(0xFF,0x00,0x00,127));//红色
+                        }
+                        else
+                        {
+                            ui->tableWidget_Result->setItem(4,6,new QTableWidgetItem("合格"));
+                            ui->tableWidget_Result->item(4,6)->setBackgroundColor(QColor(0x00,0xEE,0x00,127));//绿色
+                        }
                         ui->tableWidget_Result->show();
                     }break;
 
@@ -414,6 +666,18 @@ void MainWindow::displayRxData()//显示串口接收报文内容
                         ui->tableWidget_Result->setItem(5,3,new QTableWidgetItem(Dataclass.Result_meterenergy.Result_FCS));
                         ui->tableWidget_Result->setItem(5,4,new QTableWidgetItem(Dataclass.Result_meterenergy.Result_describe));
 
+                        if((Dataclass.Result_meterenergy.Result_HCS=="校验和不正确")
+                                ||(Dataclass.Result_meterenergy.Result_HCS=="校验和不正确")
+                                ||(Dataclass.Testinfo_Set.D_meter4852.trimmed()!=Dataclass.Testinfo_Get.D_meter4852.trimmed()))
+                        {
+                            ui->tableWidget_Result->setItem(5,6,new QTableWidgetItem("不合格"));
+                            ui->tableWidget_Result->item(5,6)->setBackgroundColor(QColor(0xFF,0x00,0x00,127));//红色
+                        }
+                        else
+                        {
+                            ui->tableWidget_Result->setItem(5,6,new QTableWidgetItem("合格"));
+                            ui->tableWidget_Result->item(5,6)->setBackgroundColor(QColor(0x00,0xEE,0x00,127));//绿色
+                        }
                         ui->tableWidget_Result->show();
                     }break;
 
@@ -423,6 +687,18 @@ void MainWindow::displayRxData()//显示串口接收报文内容
                         ui->tableWidget_Result->setItem(6,3,new QTableWidgetItem(Dataclass.Result_ESAM.Result_FCS));
                         ui->tableWidget_Result->setItem(6,4,new QTableWidgetItem(Dataclass.Result_ESAM.Result_describe));
 
+                        if((Dataclass.Result_ESAM.Result_HCS=="校验和不正确")
+                                ||(Dataclass.Result_ESAM.Result_HCS=="校验和不正确")
+                                ||(Dataclass.Testinfo_Set.D_ESAMinfo!=Dataclass.Testinfo_Get.D_ESAMinfo))
+                        {
+                            ui->tableWidget_Result->setItem(6,6,new QTableWidgetItem("不合格"));
+                            ui->tableWidget_Result->item(6,6)->setBackgroundColor(QColor(0xFF,0x00,0x00,127));//红色
+                        }
+                        else
+                        {
+                            ui->tableWidget_Result->setItem(6,6,new QTableWidgetItem("合格"));
+                            ui->tableWidget_Result->item(6,6)->setBackgroundColor(QColor(0x00,0xEE,0x00,127));//绿色
+                        }
                         ui->tableWidget_Result->show();
                     }break;
 
@@ -434,6 +710,19 @@ void MainWindow::displayRxData()//显示串口接收报文内容
                         ui->tableWidget_Result->setItem(7,3,new QTableWidgetItem(Dataclass.Result_internetParam.Result_FCS));
                         ui->tableWidget_Result->setItem(7,4,new QTableWidgetItem(Dataclass.Result_internetParam.Result_describe));
 
+
+                        if((Dataclass.Result_version.Result_HCS=="校验和不正确")
+                                ||(Dataclass.Result_version.Result_HCS=="校验和不正确")
+                                )//||(Dataclass.Testinfo_Set.D_verinfo!=Dataclass.Testinfo_Get.D_verinfo)
+                        {
+                            ui->tableWidget_Result->setItem(7,6,new QTableWidgetItem("不合格"));
+                            ui->tableWidget_Result->item(7,6)->setBackgroundColor(QColor(0xFF,0x00,0x00,127));//红色
+                        }
+                        else
+                        {
+                            ui->tableWidget_Result->setItem(7,6,new QTableWidgetItem("合格"));
+                            ui->tableWidget_Result->item(7,6)->setBackgroundColor(QColor(0x00,0xEE,0x00,127));//绿色
+                        }
                         ui->tableWidget_Result->show();
 
                         if(decode_dataty==20)
@@ -594,6 +883,19 @@ void MainWindow::readMessage()//读取网络通讯接收报文
                 ui->tableWidget_Result->setItem(8,3,new QTableWidgetItem(Dataclass.Result_internetlogin.Result_FCS));
                 ui->tableWidget_Result->setItem(8,4,new QTableWidgetItem(Dataclass.Result_internetlogin.Result_describe));
 
+                if((Dataclass.Result_internetlogin.Result_HCS=="校验和不正确")
+                        ||(Dataclass.Result_internetlogin.Result_HCS=="校验和不正确")
+                        )//||(Dataclass.Testinfo_Set.D_verinfo!=Dataclass.Testinfo_Get.D_verinfo)
+                {
+                    ui->tableWidget_Result->setItem(8,6,new QTableWidgetItem("不合格"));
+                    ui->tableWidget_Result->item(8,6)->setBackgroundColor(QColor(0xFF,0x00,0x00,127));//红色
+                }
+                else
+                {
+                    ui->tableWidget_Result->setItem(8,6,new QTableWidgetItem("合格"));
+                    ui->tableWidget_Result->item(8,6)->setBackgroundColor(QColor(0x00,0xEE,0x00,127));//绿色
+                }
+
                 ui->tableWidget_Result->show();
             }break;
             case 22:
@@ -602,6 +904,18 @@ void MainWindow::readMessage()//读取网络通讯接收报文
                 ui->tableWidget_Result->setItem(9,3,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_FCS));
                 ui->tableWidget_Result->setItem(9,4,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_describe));
 
+                if((Dataclass.Result_gprsParam.Result_HCS=="校验和不正确")
+                        ||(Dataclass.Result_gprsParam.Result_HCS=="校验和不正确")
+                        )//||(Dataclass.Testinfo_Set.D_verinfo!=Dataclass.Testinfo_Get.D_verinfo)
+                {
+                    ui->tableWidget_Result->setItem(9,6,new QTableWidgetItem("不合格"));
+                    ui->tableWidget_Result->item(9,6)->setBackgroundColor(QColor(0xFF,0x00,0x00,127));//红色
+                }
+                else
+                {
+                    ui->tableWidget_Result->setItem(9,6,new QTableWidgetItem("合格"));
+                    ui->tableWidget_Result->item(9,6)->setBackgroundColor(QColor(0x00,0xEE,0x00,127));//绿色
+                }
                 ui->tableWidget_Result->show();
             }break;
             case 23:
@@ -609,6 +923,19 @@ void MainWindow::readMessage()//读取网络通讯接收报文
                 ui->tableWidget_Result->setItem(9,2,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_HCS));
                 ui->tableWidget_Result->setItem(9,3,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_FCS));
                 ui->tableWidget_Result->setItem(9,4,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_describe));
+
+                if((Dataclass.Result_gprsParam.Result_HCS=="校验和不正确")
+                        ||(Dataclass.Result_gprsParam.Result_HCS=="校验和不正确")
+                        )//||(Dataclass.Testinfo_Set.D_verinfo!=Dataclass.Testinfo_Get.D_verinfo)
+                {
+                    ui->tableWidget_Result->setItem(9,6,new QTableWidgetItem("不合格"));
+                    ui->tableWidget_Result->item(9,6)->setBackgroundColor(QColor(0xFF,0x00,0x00,127));//红色
+                }
+                else
+                {
+                    ui->tableWidget_Result->setItem(9,6,new QTableWidgetItem("合格"));
+                    ui->tableWidget_Result->item(9,6)->setBackgroundColor(QColor(0x00,0xEE,0x00,127));//绿色
+                }
 
                 ui->tableWidget_Result->show();
 
@@ -626,6 +953,19 @@ void MainWindow::readMessage()//读取网络通讯接收报文
                 ui->tableWidget_Result->setItem(10,2,new QTableWidgetItem(Dataclass.Result_gprslogin.Result_HCS));
                 ui->tableWidget_Result->setItem(10,3,new QTableWidgetItem(Dataclass.Result_gprslogin.Result_FCS));
                 ui->tableWidget_Result->setItem(10,4,new QTableWidgetItem(Dataclass.Result_gprslogin.Result_describe));
+
+                if((Dataclass.Result_gprslogin.Result_HCS=="校验和不正确")
+                        ||(Dataclass.Result_gprslogin.Result_HCS=="校验和不正确")
+                        )//||(Dataclass.Testinfo_Set.D_verinfo!=Dataclass.Testinfo_Get.D_verinfo)
+                {
+                    ui->tableWidget_Result->setItem(10,6,new QTableWidgetItem("不合格"));
+                    ui->tableWidget_Result->item(10,6)->setBackgroundColor(QColor(0xFF,0x00,0x00,127));//红色
+                }
+                else
+                {
+                    ui->tableWidget_Result->setItem(10,6,new QTableWidgetItem("合格"));
+                    ui->tableWidget_Result->item(10,6)->setBackgroundColor(QColor(0x00,0xEE,0x00,127));//绿色
+                }
 
                 ui->tableWidget_Result->show();
 

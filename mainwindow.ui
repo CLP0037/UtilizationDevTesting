@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1076</width>
-    <height>549</height>
+    <width>1400</width>
+    <height>550</height>
    </rect>
   </property>
   <property name="font">
@@ -169,9 +169,9 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>180</x>
       <y>80</y>
-      <width>871</width>
+      <width>1151</width>
       <height>411</height>
      </rect>
     </property>
@@ -187,7 +187,7 @@
        <rect>
         <x>0</x>
         <y>10</y>
-        <width>861</width>
+        <width>1141</width>
         <height>371</height>
        </rect>
       </property>
@@ -231,6 +231,16 @@
         <string>测试结果描述</string>
        </property>
       </column>
+      <column>
+       <property name="text">
+        <string>测试结果参考</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>测试合格情况</string>
+       </property>
+      </column>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_protocol">
@@ -241,8 +251,8 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>40</y>
-        <width>861</width>
+        <y>0</y>
+        <width>1141</width>
         <height>341</height>
        </rect>
       </property>
@@ -250,8 +260,8 @@
      <widget class="QPushButton" name="pushButton_clear">
       <property name="geometry">
        <rect>
-        <x>750</x>
-        <y>0</y>
+        <x>860</x>
+        <y>350</y>
         <width>81</width>
         <height>31</height>
        </rect>
@@ -346,7 +356,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1076</width>
+     <width>1400</width>
      <height>23</height>
     </rect>
    </property>
