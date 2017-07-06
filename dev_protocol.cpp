@@ -1031,16 +1031,20 @@ int DEV_protocol::Decode(QByteArray buf)
                 Dataclass.Testinfo_Get.D_ESAMinfo="";
                 if(item_num==4)Dataclass.Testinfo_Get.D_ESAMinfo="信息长度：4位";//信息长度：4位
                 QByteArray describe_data=buf.mid(DEV_adr_len+18,buf.size()-(DEV_adr_len+18)-3-2);
-                char *buf;
+                char *buf_data;
                 char tmp[256];
-                buf=describe_data.data();
-                for(int n=0;n<item_num;n++)
+                buf_data=describe_data.data();
+                if(describe_data.size()>=item_num)
                 {
-                    ::snprintf(tmp,256, "%02X", (unsigned char)(*buf));
-                    buf++;
-                    Dataclass.Result_ESAM.Result_describe+=QString::fromUtf8(tmp);
-                    Dataclass.Result_ESAM.Result_describe+=" ";
+                    for(int n=0;n<item_num;n++)
+                    {
+                        ::snprintf(tmp,256, "%02X", (unsigned char)(*buf_data));
+                        buf_data++;
+                        Dataclass.Result_ESAM.Result_describe+=QString::fromUtf8(tmp);
+                        Dataclass.Result_ESAM.Result_describe+=" ";
+                    }
                 }
+
                 dataty=17;
             }
         }
@@ -1080,28 +1084,40 @@ int DEV_protocol::Decode(QByteArray buf)
                         int item_num=buf[DEV_adr_len+16];//转发报文长度
                         QByteArray describe_data=buf.mid(DEV_adr_len+17,buf.size()-(DEV_adr_len+17)-3-2);
                         char *buf_data;
+//                        char *buf;
+//                        if(buf == NULL)
+//                        {
+//                        char *buf = NULL;
+
+//                        }
+
+                        buf=describe_data.data();
                         char tmp[256];
                         buf_data=describe_data.data();
-                        for(int n=0;n<item_num;n++)
+                        if(describe_data.size()>=item_num)
                         {
-                            ::snprintf(tmp,256, "%02X", (unsigned char)(*buf_data));
-                            buf_data++;
-                            Dataclass.Result_meterenergy.Result_describe+=QString::fromUtf8(tmp);
-                            Dataclass.Result_meterenergy.Result_describe+=" ";
-                            if(n>=14&&n<=17)
+                            for(int n=0;n<item_num;n++)
                             {
-                                if(buf[DEV_adr_len+14]==(char)0x01)
+                                ::snprintf(tmp,256, "%02X", (unsigned char)(*buf_data));
+                                buf_data++;
+                                Dataclass.Result_meterenergy.Result_describe+=QString::fromUtf8(tmp);
+                                Dataclass.Result_meterenergy.Result_describe+=" ";
+                                if(n>=14&&n<=17)
                                 {
-                                    Dataclass.Testinfo_Get.D_meter4851+=QString::fromUtf8(tmp);
-                                    Dataclass.Testinfo_Get.D_meter4851+=" ";
-                                }
-                                else if(buf[DEV_adr_len+14]==(char)0x02)
-                                {
-                                    Dataclass.Testinfo_Get.D_meter4852+=QString::fromUtf8(tmp);
-                                    Dataclass.Testinfo_Get.D_meter4852+=" ";
+                                    if(buf[DEV_adr_len+14]==(char)0x01)
+                                    {
+                                        Dataclass.Testinfo_Get.D_meter4851+=QString::fromUtf8(tmp);
+                                        Dataclass.Testinfo_Get.D_meter4851+=" ";
+                                    }
+                                    else if(buf[DEV_adr_len+14]==(char)0x02)
+                                    {
+                                        Dataclass.Testinfo_Get.D_meter4852+=QString::fromUtf8(tmp);
+                                        Dataclass.Testinfo_Get.D_meter4852+=" ";
+                                    }
                                 }
                             }
                         }
+
                     }
                     else
                         Dataclass.Result_meterenergy.Result_describe="Recieve ERROR";

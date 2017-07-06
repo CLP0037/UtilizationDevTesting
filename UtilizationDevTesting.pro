@@ -9,6 +9,8 @@ QT       += core gui
 QT       += network
 QT       += widgets
 
+win32:QMAKE_CXXFLAGS_WARN_ON += -Wextra
+
 #gitversion.pri
 include(gitversion.pri)
 

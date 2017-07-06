@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidget_Result->setAlternatingRowColors(1); //隔行显示颜色
 
     //frame.setFixedSize(400,700);
-    this->setFixedSize(1400,550);
+    this->setFixedSize(1320,550);
 
     ui->tableWidget_Result->show();
 
@@ -725,7 +725,7 @@ void MainWindow::displayRxData()//显示串口接收报文内容
                         }
                         ui->tableWidget_Result->show();
 
-                        if(decode_dataty==20)
+                        if(decode_dataty==20&&Dataclass.TestINFO.step_Selected[8]==true)
                         {
                             QMessageBox *msgfrm =new QMessageBox(this);
                             msgfrm->setText("以太网参数下设成功，点击确认后，请连接网线，可以开始以太网测试。  ");
@@ -783,6 +783,7 @@ void MainWindow::End_process()//结束测试线程
         ui->pushBtn_Stop->setDisabled(true);
         ui->pushBtn_Reset->setDisabled(false);
         ui->pushBtn_Restart->setDisabled(false);
+        ui->btn_unLink->setDisabled(false);
 
         QMessageBox *msgfrm =new QMessageBox(this);
         msgfrm->setText("当前设备测试结束。  ");
@@ -944,9 +945,11 @@ void MainWindow::readMessage()//读取网络通讯接收报文
 //                QMessageBox *msgfrm =new QMessageBox(this);
 //                msgfrm->setText("以太网测试结束，当前连接已断开，请断开网线，同时插入GPRS卡。  ");
 //                msgfrm->show();
-               QMessageBox::information(this, QString("提示"), QString("以太网测试结束，请断开网线，同时插入GPRS卡，完成以上操作后，点击确认，当前连接会断开，GPRS测试开始。  "), QMessageBox::tr("  确定(&O)  "));
-                m_tcpsocket->close();
-
+                if(Dataclass.TestINFO.step_Selected[10]==true)
+                {
+                    QMessageBox::information(this, QString("提示"), QString("以太网测试结束，请断开网线，同时插入GPRS卡，完成以上操作后，点击确认，当前连接会断开，GPRS测试开始。  "), QMessageBox::tr("  确定(&O)  "));
+                     m_tcpsocket->close();
+                }
             }break;
             case 24://GPRS登录确认
             {

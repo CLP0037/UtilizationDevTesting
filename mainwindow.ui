@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1400</width>
+    <width>1320</width>
     <height>550</height>
    </rect>
   </property>
@@ -29,7 +29,7 @@
    <widget class="QPushButton" name="pushBtn_Start">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>85</y>
       <width>151</width>
       <height>61</height>
@@ -64,7 +64,7 @@
    <widget class="QPushButton" name="pushBtn_Stop">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>200</y>
       <width>151</width>
       <height>61</height>
@@ -99,7 +99,7 @@
    <widget class="QPushButton" name="pushBtn_Reset">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>310</y>
       <width>151</width>
       <height>61</height>
@@ -134,7 +134,7 @@
    <widget class="QPushButton" name="pushBtn_Restart">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>430</y>
       <width>151</width>
       <height>61</height>
@@ -169,7 +169,7 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>180</x>
+      <x>170</x>
       <y>80</y>
       <width>1151</width>
       <height>411</height>
@@ -356,7 +356,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1400</width>
+     <width>1320</width>
      <height>23</height>
     </rect>
    </property>
