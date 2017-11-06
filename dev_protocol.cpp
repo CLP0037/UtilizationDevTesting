@@ -156,10 +156,10 @@ int DEV_protocol::Encode(QByteArray &buf, int dataty,QString DEV_adr,QString amm
         buf.append(0x01);//buf[length++]=0x01;//停止位：1
         buf.append((char)0x00);//buf[length++]=0x00;//流控：无
 
-        buf.append((char)0x00);//buf[length++]=0x00;//超时时间
-        buf.append(0x0A);//buf[length++]=0x0A;//
-        buf.append((char)0x00);//buf[length++]=0x00;//
-        buf.append(0x0A);//buf[length++]=0x0A;//
+        buf.append((char)0x00);//buf[length++]=0x00;//接收等待报完最大时间
+        buf.append(0xC8);//buf[length++]=0x0A;//200s
+        buf.append((char)0x00);//buf[length++]=0x00;//接收等待字节的最大时间
+        buf.append(0x64);//buf[length++]=0x0A;//100
 
         buf.append(0x10);//buf[length++]=0x10;//长度=16
 
@@ -185,7 +185,9 @@ int DEV_protocol::Encode(QByteArray &buf, int dataty,QString DEV_adr,QString amm
         buf.append(0x32);//buf[length++]=0x32;
         buf.append(0x34);//buf[length++]=0x34;
         buf.append(0x33);//buf[length++]=0x33;
-        buf.append(0x56);//buf[length++]=0x56;
+        //Get_CS(QByteArray buf,int start,int len)//累加校验和
+        int checksum_transfer=Get_CS(buf,31,18);
+        buf.append((char)checksum_transfer);//buf[length++]=0x56;//转发报文校验位
         buf.append(0x16);//buf[length++]=0x16;
         buf.append((char)0x00);//buf[length++]=0x00;
     }
@@ -746,6 +748,14 @@ unsigned short DEV_protocol::Get_FCS(QByteArray buf,int start,int len)//整帧�
     return crc16ForX25;
 }
 
+int DEV_protocol::Get_CS(QByteArray buf,int start,int len)//累加校验和
+{
+    int sum=0;
+    for(int n=start;n<(start+len);n++)
+        sum+=buf[n];
+
+    return sum;
+}
 
 
 int DEV_protocol::Decode(QByteArray buf)
@@ -1091,7 +1101,7 @@ int DEV_protocol::Decode(QByteArray buf)
 
 //                        }
 
-                        buf=describe_data.data();
+                        //buf=describe_data.data();
                         char tmp[256];
                         buf_data=describe_data.data();
                         if(describe_data.size()>=item_num)
@@ -1187,7 +1197,7 @@ int DEV_protocol::Decode(QByteArray buf)
                     Dataclass.DEV_gprsParamset_2=true;
                     Dataclass.Result_gprsParam.Result_describe="Recieve OK :公网通信模块1确认_2";
                     dataty=23;
-                    if(Dataclass.TestINFO.step_Selected[10]==true)
+                    if(Dataclass.TestINFO.step_Selected[9]==true||Dataclass.TestINFO.step_Selected[10]==true)
                         Dataclass.TestINFO.testSteps_currentLevel=3;//GPRS参数下设结束，进入第三测试阶段
                 }
             }
@@ -1229,7 +1239,7 @@ int DEV_protocol::Decode(QByteArray buf)
                     Dataclass.DEV_internetParamset_3=true;
                     Dataclass.Result_internetParam.Result_describe="Recieve OK :以太网通信模块1确认_3";
                     dataty=20;
-                    if(Dataclass.TestINFO.step_Selected[9]==true||Dataclass.TestINFO.step_Selected[8]==true)
+                    if(Dataclass.TestINFO.step_Selected[8]==true||Dataclass.TestINFO.step_Selected[7]==true)
                         Dataclass.TestINFO.testSteps_currentLevel=2;//以太网参数参数下设结束，进入第二测试阶段
                 }
             }

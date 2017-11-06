@@ -20,6 +20,8 @@ public:
     unsigned short Get_HCS(QByteArray buf,int start,int len);//帧头校验
     unsigned short Get_FCS(QByteArray buf,int start,int len);//帧校验
 
+    int Get_CS(QByteArray buf,int start,int len);//累加校验和
+
     int GET_weekint(QString week);
 
 

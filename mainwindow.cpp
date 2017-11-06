@@ -96,8 +96,8 @@ MainWindow::MainWindow(QWidget *parent) :
      connect(&threadTest.threadA, SIGNAL(comRecive()), this, SLOT(displayRxData()));//收到报文在报文显示窗展示
      connect(&threadTest.threadA, SIGNAL(comSend()), this, SLOT(displayTxData()));//发送的报文在报文显示窗展示
 
-     connect(&this->threadTest,SIGNAL(testprocess_end()),this,SLOT(End_process()));//完成测试结束测试线程//testprocess_end()  End_process()
-     connect(&this->threadTest,SIGNAL(sendmsg_server()),this,SLOT(sendMessage_server()));//sendmessage_server()   sendMessage_server()
+     connect(&this->threadTest,SIGNAL(testprocess_end()),this,SLOT(End_process()));//完成测试结束测试线程
+     connect(&this->threadTest,SIGNAL(sendmsg_server()),this,SLOT(sendMessage_server()));
 
      ui->pushBtn_Start->setDisabled(true);
      ui->pushBtn_Stop->setDisabled(true);
@@ -212,7 +212,13 @@ void MainWindow::on_pushBtn_Start_clicked()//启动测试
 
         Dataclass.TestINFO.testSteps_total=14;//目前可选的总测试项目数为11 总步骤为14
         Dataclass.TestINFO.testSteps_currentLevel=1;
+//        if(Dataclass.TestINFO.step_Selected[8]==true||Dataclass.TestINFO.step_Selected[7]==true)
+//            Dataclass.TestINFO.testSteps_currentLevel=2;//以太网参数参数下设结束，进入第二测试阶段
+//        if(Dataclass.TestINFO.step_Selected[9]==true||Dataclass.TestINFO.step_Selected[10]==true)
+//            Dataclass.TestINFO.testSteps_currentLevel=3;//GPRS参数下设结束，进入第三测试阶段
+
         Dataclass.TestINFO.testSteps_currentTeststep=1;
+        Dataclass.TestINFO.test_resendtimes=0;//重发次数清零
 
         if(Dataclass.TestINFO.step_Selected[10]==true)
         {
@@ -315,6 +321,7 @@ void MainWindow::on_pushBtn_Start_clicked()//启动测试
         Dataclass.Testinfo_Set.D_voltage+=str_V;
 
         Dataclass.Testinfo_Set.D_yxchange="类型：17,值：1;类型：17,值：1;";
+        Dataclass.Testinfo_Set.D_yxchange_0="类型：17,值：0;类型：17,值：0;";
         Dataclass.Testinfo_Set.D_meter4851="类型标识位：33 32 34 33";
         Dataclass.Testinfo_Set.D_meter4852="类型标识位：33 32 34 33";
         Dataclass.Testinfo_Set.D_ESAMinfo="信息长度：4位";
@@ -351,7 +358,7 @@ void MainWindow::on_pushBtn_Start_clicked()//启动测试
                     }break;
                     case 3:
                     {
-                        ui->tableWidget_Result->setItem(3,5,new QTableWidgetItem(Dataclass.Testinfo_Set.D_yxchange));
+                        ui->tableWidget_Result->setItem(3,5,new QTableWidgetItem(Dataclass.Testinfo_Set.D_yxchange+" or "+Dataclass.Testinfo_Set.D_yxchange_0));
                     }break;
                     case 4:
                     {
@@ -627,7 +634,7 @@ void MainWindow::displayRxData()//显示串口接收报文内容
 
                         if((Dataclass.Result_yxchange.Result_HCS=="校验和不正确")
                                 ||(Dataclass.Result_yxchange.Result_HCS=="校验和不正确")
-                                ||(Dataclass.Testinfo_Set.D_yxchange!=Dataclass.Testinfo_Get.D_yxchange))
+                                ||(Dataclass.Testinfo_Set.D_yxchange!=Dataclass.Testinfo_Get.D_yxchange&&Dataclass.Testinfo_Set.D_yxchange_0!=Dataclass.Testinfo_Get.D_yxchange))
                         {
                             ui->tableWidget_Result->setItem(3,6,new QTableWidgetItem("不合格"));
                             ui->tableWidget_Result->item(3,6)->setBackgroundColor(QColor(0xFF,0x00,0x00,127));//红色
@@ -734,6 +741,59 @@ void MainWindow::displayRxData()//显示串口接收报文内容
                         }
 
                     }break;
+
+                case 22:
+                {
+                    ui->tableWidget_Result->setItem(9,2,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_HCS));
+                    ui->tableWidget_Result->setItem(9,3,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_FCS));
+                    ui->tableWidget_Result->setItem(9,4,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_describe));
+
+                    if((Dataclass.Result_gprsParam.Result_HCS=="校验和不正确")
+                            ||(Dataclass.Result_gprsParam.Result_HCS=="校验和不正确")
+                            )//||(Dataclass.Testinfo_Set.D_verinfo!=Dataclass.Testinfo_Get.D_verinfo)
+                    {
+                        ui->tableWidget_Result->setItem(9,6,new QTableWidgetItem("不合格"));
+                        ui->tableWidget_Result->item(9,6)->setBackgroundColor(QColor(0xFF,0x00,0x00,127));//红色
+                    }
+                    else
+                    {
+                        ui->tableWidget_Result->setItem(9,6,new QTableWidgetItem("合格"));
+                        ui->tableWidget_Result->item(9,6)->setBackgroundColor(QColor(0x00,0xEE,0x00,127));//绿色
+                    }
+                    ui->tableWidget_Result->show();
+                }break;
+                case 23:
+                {
+                    ui->tableWidget_Result->setItem(9,2,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_HCS));
+                    ui->tableWidget_Result->setItem(9,3,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_FCS));
+                    ui->tableWidget_Result->setItem(9,4,new QTableWidgetItem(Dataclass.Result_gprsParam.Result_describe));
+
+                    if((Dataclass.Result_gprsParam.Result_HCS=="校验和不正确")
+                            ||(Dataclass.Result_gprsParam.Result_HCS=="校验和不正确")
+                            )//||(Dataclass.Testinfo_Set.D_verinfo!=Dataclass.Testinfo_Get.D_verinfo)
+                    {
+                        ui->tableWidget_Result->setItem(9,6,new QTableWidgetItem("不合格"));
+                        ui->tableWidget_Result->item(9,6)->setBackgroundColor(QColor(0xFF,0x00,0x00,127));//红色
+                    }
+                    else
+                    {
+                        ui->tableWidget_Result->setItem(9,6,new QTableWidgetItem("合格"));
+                        ui->tableWidget_Result->item(9,6)->setBackgroundColor(QColor(0x00,0xEE,0x00,127));//绿色
+                    }
+
+                    ui->tableWidget_Result->show();
+
+                    //GPRS参数下设确认结束，断开当前连接
+                    //m_tcpsocket->disconnect();
+    //                QMessageBox *msgfrm =new QMessageBox(this);
+    //                msgfrm->setText("以太网测试结束，当前连接已断开，请断开网线，同时插入GPRS卡。  ");
+    //                msgfrm->show();
+                    if(Dataclass.TestINFO.step_Selected[10]==true)
+                    {
+                        QMessageBox::information(this, QString("提示"), QString("以太网测试结束，请断开网线，同时插入GPRS卡，完成以上操作后，点击确认，当前连接会断开，GPRS测试开始。  "), QMessageBox::tr("  确定(&O)  "));
+                         m_tcpsocket->close();
+                    }
+                }break;
                 }
 
                 Dataclass.buf_rev.remove(0,len_rev);

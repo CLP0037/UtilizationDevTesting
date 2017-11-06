@@ -172,6 +172,7 @@ public:
 
         QString D_voltage;
         QString D_yxchange;
+        QString D_yxchange_0;
         QString D_meter4851;
         QString D_meter4852;
         QString D_ESAMinfo;

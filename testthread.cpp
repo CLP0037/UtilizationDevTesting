@@ -220,13 +220,16 @@ void TestThread::run()
         if(Dataclass.TestINFO.testSteps_currentTeststep==10)//step10====以太网参数下设3
         {
             if(((Dataclass.TestINFO.test_resendtimes>0)&&(Dataclass.DEV_internetParamset_3==true||(Dataclass.TestINFO.test_resendtimes>2)))
-                    ||(Dataclass.TestINFO.step_Selected[7]==false))//未选择当前测试项   收到成功回复  重发过两次
+                    ||(Dataclass.TestINFO.step_Selected[8]==false))//未选择当前测试项   收到成功回复  重发过两次
             {
-                Dataclass.TestINFO.testSteps_currentTeststep=0;//Dataclass.TestINFO.testSteps_currentTeststep++;等待以太网上线
+                if(Dataclass.TestINFO.step_Selected[8]==false)
+                    Dataclass.TestINFO.testSteps_currentTeststep=12;//如果未选择测试以太网上线测试
+                else
+                    Dataclass.TestINFO.testSteps_currentTeststep=0;//如果已选择测试以太网上线测试，等待以太网上线
                 Dataclass.TestINFO.test_resendtimes=0;
                 Dataclass.DEV_internetParamset_3=false;
 
-                if(Dataclass.TestINFO.testSteps_currentLevel==1)
+                if(Dataclass.TestINFO.testSteps_currentLevel==1&&Dataclass.TestINFO.step_Selected[9]==false&&Dataclass.TestINFO.step_Selected[10]==false)
                 {
                     Dataclass.DEV_testprocess_end=true;//若只选择了串口测试相关项，测试结束
                     emit(this->testprocess_end());
@@ -284,7 +287,7 @@ void TestThread::run()
                 Dataclass.TestINFO.test_resendtimes=0;
                 Dataclass.DEV_gprsParamset_2=false;
 
-                if(Dataclass.TestINFO.testSteps_currentLevel==2)
+                if(Dataclass.TestINFO.step_Selected[10]==false)//Dataclass.TestINFO.testSteps_currentLevel==2&&
                 {
                     Dataclass.DEV_testprocess_end=true;//若只选择了串口测试相关项和网口测试相关项，测试结束
                     emit(this->testprocess_end());
@@ -383,11 +386,12 @@ void TestThread::run()
 
         if(Dataclass.ShowStr_Msg!=""&&Dataclass.BufLen_send>0)//有内容发送
         {
+            this->threadA.TxData.clear();
+            this->threadA.TxData.append(Dataclass.Buffer_send,Dataclass.BufLen_send);
+            this->threadA.changeTxState(true);
+/*
             if(Dataclass.TestINFO.testSteps_currentTeststep<=10)//串口发送
             {
-//                char *buf_send;
-//                buf_send=Dataclass.Buffer_send.data();
-
                 this->threadA.TxData.clear();
                 this->threadA.TxData.append(Dataclass.Buffer_send,Dataclass.BufLen_send);
                 this->threadA.changeTxState(true);
@@ -398,7 +402,7 @@ void TestThread::run()
                 //sendmsg_server()
                 emit(this->sendmsg_server());
             }
-
+*/
         }
 
         if(Dataclass.TestINFO.testSteps_currentTeststep==5||Dataclass.TestINFO.testSteps_currentTeststep==6)

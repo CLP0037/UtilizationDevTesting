@@ -308,7 +308,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>14464659</string>
+     <string>AAAAAAAAAAAA</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_ammetervaddr">
@@ -321,7 +321,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>340114490013</string>
+     <string>000001374911</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_Link">

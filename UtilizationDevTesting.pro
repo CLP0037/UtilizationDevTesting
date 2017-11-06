@@ -9,7 +9,8 @@ QT       += core gui
 QT       += network
 QT       += widgets
 
-win32:QMAKE_CXXFLAGS_WARN_ON += -Wextra
+win32:QMAKE_CXXFLAGS_WARN_ON += -Wshadow
+#-Wextra
 
 #gitversion.pri
 include(gitversion.pri)
@@ -53,5 +54,7 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     images/myResourses.qrc
-	
+
+
+
 #RC_FILE = myapp.rc

@@ -53,7 +53,7 @@ void MyThread::run()
             if (my_serialport->waitForBytesWritten(5))
             {
                 qDebug() << "Brush:" <<"send data success";
-                if (my_serialport->waitForReadyRead(1500))  //1s
+                if (my_serialport->waitForReadyRead(2000))  //1s
                 {
                     requestData = my_serialport->readAll();
                     while (my_serialport->waitForReadyRead(15))
